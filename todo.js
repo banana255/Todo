@@ -134,7 +134,7 @@ var saveTodos = function() {
 
 var loadTodos = function() {
     var s = localStorage.todoList
-    return JSON.parse(s)
+    return (s == undefined) ? [] : JSON.parse(s)
 }
 
 // 返回自己在父元素中的下标
