@@ -3,20 +3,15 @@
     <head>
         <meta charset="utf-8">
         <title>TODO</title>
-        <style>
-            /* 完成 todo */
-            .done {
-                color: gray;
-                text-decoration: line-through;
-            }
-        </style>
+        <link rel="stylesheet" href="todo.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     </head>
     <body>
         <div class="todo-main">
             <!-- todo 输入框 -->
             <div class="todo-form">
-                <input id='id-input-todo' type="text">
-                <button id='id-button-add' type="button">Add</button>
+                <input id='id-input-todo' type="text"  placeholder="请输入任务">
+                <button id='id-button-add' disabled>添加</button>
             </div>
             <!-- todo 列表 -->
             <div id="id-div-container">
