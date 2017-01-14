@@ -11,7 +11,9 @@ var bindBlur = function() {
     todoContainer.addEventListener('blur', function(){
         log('container blur', event, event.target)
         var target = event.target
-        var index = indexOfElement(target.parentElement)
+        var taskContent = target.parentElement
+        var todoDiv = taskContent.parentElement
+        var index = indexOfElement(todoDiv)
         todoList[index].task = target.innerHTML
         saveTodos()
         target.setAttribute('contenteditable', 'false')
@@ -61,12 +63,12 @@ var bindUpdateKeyEnter = function() {
             target.blur()
             // 阻止默认行为的发生, 也就是不插入回车
             event.preventDefault()
-            // 更新 todo
-            var index = indexOfElement(target.parentElement)
+            var taskContent = target.parentElement
+            var todoDiv = taskContent.parentElement
+            var index = indexOfElement(todoDiv)
             log('update index',  index)
             // 把元素在 todoList 中更新
             todoList[index].task = target.innerHTML
-            // todoList.splice(index, 1)
             saveTodos()
 
         }
@@ -94,7 +96,7 @@ var bindDoneDeleteEdit = function() {
             saveTodos()
         } else if(target.classList.contains('todo-edit')) {
             log('edit')
-            var s = target.parentElement.children[3]
+            var s = todoDiv.children[3].children[1]
             log('span is', s)
             s.setAttribute('contenteditable', 'true')
             s.focus()
