@@ -8,15 +8,19 @@ var e = (sel) => document.querySelector(sel)
 
 var bindBlur = function() {
     var todoContainer = e('#id-div-container')
-    todoContainer.addEventListener('blur', function(){
+    todoContainer.addEventListener('blur', function(event){
         log('container blur', event, event.target)
         var target = event.target
-        var taskContent = target.parentElement
-        var todoDiv = taskContent.parentElement
-        var index = indexOfElement(todoDiv)
-        todoList[index].task = target.innerHTML
-        saveTodos()
-        target.setAttribute('contenteditable', 'false')
+        if (target.classList.contains('todo-task')) {
+            var taskContent = target.parentElement
+            var todoDiv = taskContent.parentElement
+            log('todoDiv', todoDiv)
+            var index = indexOfElement(todoDiv)
+            log('index', index)
+            todoList[index].task = target.innerHTML
+            saveTodos()
+            target.setAttribute('contenteditable', 'false')
+        }
     }, true)
 }
 
@@ -121,7 +125,7 @@ var templateTodo = function(todo) {
             <button class='todo-edit'>更新</button>
             <span class='todo-content'>
                 <span class='task-time' >${todo.time}</span>
-                <span contenteditable='false'>${todo.task}</span>
+                <span class='todo-task' contenteditable='false'>${todo.task}</span>
             </span>
         </div>
     `
