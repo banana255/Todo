@@ -1,0 +1,23 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "运用 DOM 实现  TODO 事件备忘录",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BigBanan/Todo.git"
+  },
+  "author": "bigbananas",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/BigBanan/Todo/issues"
+  },
+  "homepage": "https://github.com/BigBanan/Todo#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  }
+}
