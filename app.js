@@ -1,9 +1,12 @@
+"use strict"
+
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
 
 app.use(express.static('static'))
 app.use(bodyParser.json())
+
 
 const registerRoutes = function(app, routes) {
     /*
