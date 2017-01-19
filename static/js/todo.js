@@ -1,9 +1,3 @@
-var log = function() {
-    console.log.apply(console, arguments)
-}
-
-var e = (sel) => document.querySelector(sel)
-
 var bindBlur = function() {
     var todoContainer = e('#id-div-container')
     todoContainer.addEventListener('blur', function(event){
@@ -45,16 +39,20 @@ var bindAddButton = function() {
     })
 }
 
+
 var bindAddkeyUp = function() {
     var input = e('#id-input-todo')
-    input.addEventListener('keyup', function(event){
-        log('keyup')
-        if (input.value.length > 0) {
-            e('#id-button-add').removeAttribute('disabled')
-        } else {
-            e('#id-button-add').setAttribute('disabled', '')
-        }
-    })
+    var button = e('#id-button-add')
+    inputRequired(input, button)
+    // var input = e('#id-input-todo')
+    // input.addEventListener('keyup', function(event){
+    //     log('keyup')
+    //     if (input.value.length > 0) {
+    //         e('#id-button-add').removeAttribute('disabled')
+    //     } else {
+    //         e('#id-button-add').setAttribute('disabled', '')
+    //     }
+    // })
 
 }
 
@@ -138,43 +136,12 @@ var templateTodo = function(item) {
     return t
 }
 
-// 开关元素的某个 class
-var toggleClass = function(element, className) {
-    if (element.classList.contains(className)) {
-        element.classList.remove(className)
-    } else {
-        element.classList.add(className)
-    }
-}
-
 var zfill = function(string) {
     var s = String(string)
     if (s.length == 1) {
         s = '0' + s
     }
     return s
-}
-
-var currentTime = function() {
-    var d = new Date()
-    var month = zfill(d.getMonth() + 1)
-    var date = zfill(d.getDate())
-    var hours = zfill(d.getHours())
-    var minutes = zfill(d.getMinutes())
-    var seconds = zfill(d.getSeconds())
-    var timeString = `${month}/${date} ${hours}:${minutes}:${seconds}`
-    return timeString
-}
-
-var timeFormat = function(time) {
-    var d = new Date(time * 1000)
-    var month = zfill(d.getMonth() + 1)
-    var date = zfill(d.getDate())
-    var hours = zfill(d.getHours())
-    var minutes = zfill(d.getMinutes())
-    var seconds = zfill(d.getSeconds())
-    var timeString = `${month}/${date} ${hours}:${minutes}:${seconds}`
-    return timeString
 }
 
 // 程序加载后, 加载 todoList 并且添加到页面中
@@ -203,10 +170,9 @@ var bindEvents = function() {
 }
 
 
-var __main = function() {
+var __mainTodo = function() {
     initBrower()
     bindEvents()
 }
 
 const todo = new Todo()
-__main()

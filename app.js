@@ -25,6 +25,7 @@ const registerRoutes = function(app, routes) {
 const routeModules = [
     './route/index',
     './route/todo',
+    './route/login',
 
 ]
 

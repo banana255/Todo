@@ -5,9 +5,20 @@
         <title>TODO</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="stylesheet" href="css/todo.css">
+        <script src='js/bananas.js'></script>
         <script src='js/ajax.js'></script>
+        <script src='js/login.js'></script>
+        <script src='js/todo.js'></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+                // do work
+                // __mainTodo()
+                __mainLogin()
+            });
+        </script>
     </head>
     <body>
+        <!--  Todo -->
         <div class="todo-main">
             <!-- todo 输入框 -->
             <div class="todo-form">
@@ -19,6 +30,24 @@
 
             </div>
         </div>
-        <script src='js/todo.js'></script>
+        <!--  Todo -->
+
+        <!-- Login -->
+        <div class="todo-login">
+            <div class="todo-login-form">
+                <div class="todo-login-title">
+                    <span>主人验证</span>
+                </div>
+                <div class="todo-login-content">
+                    <input id="id-todoLogin-input" class='' placeholder="请输入口令">
+                </div>
+                <div class="todo-login-buttons">
+                    <button id="id-todoLogin-cancel"  class="todo-login-button">体验一下</button>
+                    <button id="id-todoLogin-confirm" class="todo-login-button" disabled>提交</button>
+                </div>
+            </div>
+        </div>
+        <!-- Login -->
+
     </body>
 </html>

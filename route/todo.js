@@ -8,10 +8,10 @@ const todo = require('../model/todo')
 
 var all = {
     path: '/api/todo/all',
-    method: 'get',
+    method: 'post',
     func: function(req, res) {
-        var todos = todo.all()
-        console.log('request api/todo/all');
+        console.log('request api/todo/all', req.body);
+        var todos = todo.all(req.body)
         var r = JSON.stringify(todos)
         res.send(r)
     }

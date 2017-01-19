@@ -1,3 +1,5 @@
+var login = require('./login')
+
 var fs = require('fs')
 
 /*
@@ -7,7 +9,7 @@ var fs = require('fs')
     .update(form)
 */
 
-var todoFilePath = './db/todo.json'
+// var todoFilePath = './db/todo.json'
 
 const ModelTodo = function(form) {
     this.task = form.task || ''
@@ -15,23 +17,35 @@ const ModelTodo = function(form) {
     this.finish = form.finish || false
 }
 
-const loadTodos = function() {
-    var content = fs.readFileSync(todoFilePath, 'utf8')
+const loadTodos = function(path) {
+    var content = fs.readFileSync(path, 'utf8')
     var todos = content ? JSON.parse(content) : []
     return todos
 }
 
-var t = {
-    // loadTodos 只执行一次
-    data: loadTodos()
+const loadPathFromLogin = function(form) {
+    var u = login.findByKey(form)
+    if (u) {
+        return u.path
+    } else {
+        console.log('ERR 未找的该用户');
+    }
 }
 
-t.all = function() {
+var t = {
+    // loadTodos 只执行一次
+    // data: loadTodos()
+}
+
+t.all = function(form) {
+    this.path = loadPathFromLogin(form)
+    this.data = loadTodos(this.path)
     var todos = this.data
     return todos
 }
 
 t.new = function(form) {
+    this.all(form)
     var m = new ModelTodo(form)
     var last = this.data[this.data.length-1]
     if (last == undefined) {
@@ -46,7 +60,7 @@ t.new = function(form) {
 
 t.save = function() {
     var s = JSON.stringify(this.data)
-    fs.writeFile(todoFilePath, s, (err) => {
+    fs.writeFile(this.path, s, (err) => {
         err ? console.log(err) : console.log('保存成功');
     })
 }
@@ -63,6 +77,7 @@ t.indexOfTodos = function(id) {
 }
 
 t.dele = function(form) {
+    this.all(form)
     if (!form.id) {
         console.log('delete id is no defined!');
         return false
@@ -78,6 +93,7 @@ t.dele = function(form) {
 }
 
 t.update = function(form) {
+    this.all(form)
     if (!form.id) {
         console.log('update id is no defined!');
         return false
