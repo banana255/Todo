@@ -8,16 +8,23 @@
         <script src='js/bananas.js'></script>
         <script src='js/ajax.js'></script>
         <script src='js/login.js'></script>
+        <script src='js/header.js'></script>
         <script src='js/todo.js'></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
                 // do work
                 // __mainTodo()
                 __mainLogin()
+                __mainHeader()
             });
         </script>
     </head>
     <body>
+        <!-- tab -->
+        <div class="header">
+            <span class='login-exit'>退出</span>
+        </div>
+
         <!--  Todo -->
         <div class="todo-main">
             <!-- todo 输入框 -->
@@ -33,7 +40,7 @@
         <!--  Todo -->
 
         <!-- Login -->
-        <div class="todo-login">
+        <!-- <div class="todo-login">
             <div class="todo-login-form">
                 <div class="todo-login-title">
                     <span>主人验证</span>
@@ -46,7 +53,7 @@
                     <button id="id-todoLogin-confirm" class="todo-login-button" disabled>提交</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Login -->
 
     </body>

@@ -8,6 +8,52 @@ var bindLoginkeyUp = function() {
     })
 }
 
+var saveKey = function(key) {
+    var k = JSON.stringify(key)
+    localStorage._key = k
+    todo.key = key
+}
+
+var loadKey = function() {
+    var k = localStorage._key ?  JSON.parse(localStorage._key) : undefined
+    if (k) {
+        todo.key = k
+    }
+    return k
+}
+
+var deleKey = function() {
+    localStorage._key = false
+    todo.key = undefined
+}
+
+var loginTemplete = function() {
+    return `
+    <!-- Login -->
+    <div class="todo-login">
+        <div class="todo-login-form">
+            <div class="todo-login-title">
+                <span>主人验证</span>
+            </div>
+            <div class="todo-login-content">
+                <input id="id-todoLogin-input" class='' placeholder="请输入口令">
+            </div>
+            <div class="todo-login-buttons">
+                <button id="id-todoLogin-cancel"  class="todo-login-button">体验一下</button>
+                <button id="id-todoLogin-confirm" class="todo-login-button" disabled>提交</button>
+            </div>
+        </div>
+    </div>
+    <!-- Login -->
+    `
+}
+
+var insertLogin = function() {
+    var h = loginTemplete()
+    var body = e('body')
+    body.innerHTML += h
+}
+
 var bindLoginConfirm = function() {
     var button = e('#id-todoLogin-confirm')
     var input = e('#id-todoLogin-input')
@@ -22,7 +68,7 @@ var bindLoginConfirm = function() {
                 // 口令正确
                 log('口令正确')
                 e('.todo-login').remove()
-                todo.key = form.key
+                saveKey(form.key)
                 __mainTodo()
 
             } else {
@@ -44,6 +90,17 @@ var bindEventsLogin = function() {
     bindLoginConfirm()
 }
 
+var initLogin = function() {
+    if (!loadKey()) {
+        log('无口令', loadKey())
+        insertLogin()
+        bindEventsLogin()
+    } else {
+        log('有口令', loadKey())
+        __mainTodo()
+    }
+}
+
 var __mainLogin = function() {
-    bindEventsLogin()
+    initLogin()
 }

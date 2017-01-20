@@ -156,7 +156,7 @@ var initBrower = function() {
     })
 }
 
-var bindEvents = function() {
+var bindEventsTodo = function() {
 
     bindAddButton()
 
@@ -172,7 +172,7 @@ var bindEvents = function() {
 
 var __mainTodo = function() {
     initBrower()
-    bindEvents()
+    bindEventsTodo()
 }
 
 const todo = new Todo()

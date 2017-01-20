@@ -42,7 +42,7 @@ for (let i = 0; i < routeModules.length; i++) {
     registerRoutes(app, routes)
 }
 
-const server = app.listen(80, function(){
+const server = app.listen(8082, function(){
     var host = server.address().address
     var port = server.address().port
 

@@ -73,7 +73,7 @@ var ajax = function(request) {
             request.callback(r.response)
         }
     }
-    if (request.method === 'GET') {
+    if (request.data == undefined) {
         r.send()
     } else {
         r.send(request.data)
