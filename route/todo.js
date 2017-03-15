@@ -1,4 +1,6 @@
-const todo = require('../model/todo')
+// const todo = require('../model/todo')
+const todo = require('../model/project')
+
 /*
     .all()
     .new(form)

@@ -2,6 +2,10 @@
     margin: 0;
 }
 
+body {
+    height: 100vh;
+}
+
 /* 完成 todo */
 .done {
     color: gray;
@@ -48,6 +52,7 @@
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 8%;
 }
 
 .todo-login-form > *{
@@ -76,9 +81,12 @@
 /* login error input animation*/
 .errorInput {
     animation: 0.1s shake 3 alternate;
-    box-shadow: 0px 0px 2rem red;
+    /*box-shadow: 0px 0px 2rem red;*/
     outline: #fb5555 1px solid;
     border: 0rem;
+    box-shadow: 0px 0px 2rem #F00808;
+    -webkit-box-shadow: 0px 0px 2rem #F00808;
+    -moz-box-shadow: 0px 0px 2rem #F00808;
 }
 
 @keyframes shake {
@@ -104,7 +112,9 @@
     background: white;
     text-align: center;
     margin: 1rem;
-}
+    border-radius: 8%;
+    box-sizing: border-box;
+    padding: 0.1rem;}
 
 .login-exit:hover {
     background: #cacaca;
@@ -117,3 +127,52 @@
 .login-exit-touches {
     background: black !important;
 }
+
+/*footer*/
+.footer {
+    background: black;
+    height: 3rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0rem;
+}
+
+.css_button {
+   padding: 23px 46px;
+   border: 1px solid #C7C7C7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#050505));
+   background: -webkit-linear-gradient(top, #FFFFFF, #050505);
+   background: -moz-linear-gradient(top, #FFFFFF, #050505);
+   background: -ms-linear-gradient(top, #FFFFFF, #050505);
+   background: -o-linear-gradient(top, #FFFFFF, #050505);
+   background-color: #050505;
+   box-shadow: 0px 7px 2px -5px #1A1A1A, inset 0px 0px 10px #787777;
+   -webkit-box-shadow: 0px 7px 2px -5px #1A1A1A, inset 0px 0px 10px #787777;
+   -moz-box-shadow: 0px 7px 2px -5px #1A1A1A, inset 0px 0px 10px #787777;
+   -webkit-border-radius: 14px;
+   -moz-border-radius: 14px;
+   border-radius: 14px;
+   text-shadow: #0F0E0E 1px 1px 0px;
+   color: #080000;
+   font-size: 14px;
+   font-family: Arial;
+   text-decoration: none;
+   font-weight: bold;
+   -webkit-transition: 0.2s;
+   -moz-transition: 0.2s;
+   -o-transition: 0.2s;
+   cursor: pointer;
+   }
+.css_button:hover {
+   background: none;
+   background-color: #050505;
+   box-shadow: 0px 0px 5px 0px #AAAAAA;
+   -webkit-box-shadow: 0px 0px 5px 0px #AAAAAA;
+   -moz-box-shadow: 0px 0px 5px 0px #AAAAAA;
+   border: 1px solid #ffffff;
+   color: #FFFFFF;
+   }
+.css_button:active {
+   top: 1px;
+   position: relative;
+   }

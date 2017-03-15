@@ -34,7 +34,8 @@ u.new = function(form) {
 
     // 用 fs new 一个新的 db
     // fs open 的路径相对于 Todo
-    m.path = 'db/todo-id' + m.id + '-key-' + m.key + '.json'
+    m.todoPath = 'db/todo-id' + m.id + '-key-' + m.key + '.json'
+    m.projectPath = 'db/project-id' + m.id + '-key-' + m.key + '.json'
     fs.open(m.path, "w", 0644, function(err,fd){
     if(err) {
         throw err
@@ -103,7 +104,8 @@ u.findByKey = function(form) {
             return {
                 isKey: true,
                 id: this.data[i].id,
-                path: this.data[i].path,
+                todoPath: this.data[i].todoPath,
+                projectPath: this.data[i].projectPath,
             }
         }
     }
