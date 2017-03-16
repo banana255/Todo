@@ -39,7 +39,7 @@ var loginTemplete = function() {
                 <input id="id-todoLogin-input" class='' placeholder="请输入口令">
             </div>
             <div class="todo-login-buttons">
-                <button id="id-todoLogin-cancel"  class="todo-login-button">体验一下</button>
+                <button id="id-todoLogin-cancel"  class="todo-login-button" disabled>体验一下</button>
                 <button id="id-todoLogin-confirm" class="todo-login-button" disabled>提交</button>
             </div>
         </div>

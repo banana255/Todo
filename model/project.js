@@ -9,23 +9,24 @@ var fs = require('fs')
     .update(form)
 */
 
-// var todoFilePath = './db/project.json'
 
 const ModelProject = function(form) {
-    this.task = form.task || ''
+    this.name = form.name || ''
     this.created_time = form.created_time || Math.floor(new Date() / 1000)
     this.author = form.author || ''
+    // 0 为 开发中，  1 为 开发完
+    this.status = form.status || 0
 }
 
-const loadTodos = function(path) {
+const loadFiles = function(path) {
     var content = fs.readFileSync(path, 'utf8')
-    var todos = content ? JSON.parse(content) : []
-    return todos
+    var data = content ? JSON.parse(content) : []
+    return data
 }
 
 const loadPathFromLogin = function(form) {
     /*
-        验证 用户， 若该用户 存在 则返回 该用户的 todo path
+        验证 用户， 若该用户 存在 则返回 该用户的 project path
     */
     var u = login.findByKey(form)
     if (u) {
@@ -35,36 +36,52 @@ const loadPathFromLogin = function(form) {
     }
 }
 
+const loadTodoByProId = function(project_id, key) {
+    const todo = require('./todo')
+    var form = {
+        key: key,
+    }
+    var todos = todo.all(form)
+    var ts = []
+    for (var i = 0; i < todos.length; i++) {
+        var t = todos[i]
+        // console.log(project_id, t.project_id, i);
+        if(project_id == t.project_id) {
+            ts.push(t)
+        }
+    }
+    // console.log('todos', ts);
+    return ts
+}
+
+const deleteTodoByProId = function(project_id, key) {
+    const todo = require('./todo')
+    let form = {
+        key: key,
+        'project_id': project_id,
+    }
+    todo.deleTodoByProId(form)
+}
+
 var p = {
-    // loadTodos 只执行一次
-    // data: loadTodos()
+    // data:
 }
 
 p.all = function(form) {
     this.path = loadPathFromLogin(form)
-    this.data = loadTodos(this.path)
-    var projects = this.data
+    this.data = loadFiles(this.path)
+    var projects = JSON.parse(JSON.stringify(this.data))
 
-    const todo = require('./todo')
-    var todos = todo.all()
     for (var i = 0; i < projects.length; i++) {
-        var p = projects[i]
-        var ts = []
-        for (var i = 0; i < todos.length; i++) {
-            var t = todos[i]
-            if(p.id = t.project_id) {
-                ts.push(t)
-            }
-        }
-        p.todos = ts
+        let p = projects[i]
+        p.todos = loadTodoByProId(p.id, form.key)
     }
-
     return projects
 }
 
 p.new = function(form) {
     this.all(form)
-    var m = new ModelTodo(form)
+    var m = new ModelProject(form)
     var last = this.data[this.data.length-1]
     if (last == undefined) {
         m.id = 1
@@ -77,15 +94,15 @@ p.new = function(form) {
 }
 
 p.save = function() {
-    var s = JSON.stringify(this.data)
+    var s = JSON.stringify(this.data, '', 4)
     fs.writeFile(this.path, s, (err) => {
-        err ? console.log(err) : console.log('保存成功');
+        err ? console.log(err) : console.log('project 保存成功');
     })
 }
 
 p.indexOfProjects = function(id) {
-    for (var i = 0; i < t.data.length; i++) {
-        if(t.data[i].id == id) {
+    for (var i = 0; i < this.data.length; i++) {
+        if(this.data[i].id == id) {
             // console.log('indexOfProjects', i);
             return  i
         }
@@ -102,10 +119,11 @@ p.dele = function(form) {
     } else {
         var index = this.indexOfProjects(form.id)
         if (index !== false) {
+            deleteTodoByProId(form.id, form.key)
             var item = this.data[index]
             this.data.splice(index, 1)
             this.save()
-            return  item
+            return item
         }
     }
 }

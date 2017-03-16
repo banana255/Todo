@@ -1,4 +1,4 @@
-const todo = require('../model/todo')
+const project = require('../model/project')
 
 /*
     .all()
@@ -8,47 +8,47 @@ const todo = require('../model/todo')
 */
 
 var all = {
-    path: '/api/todo/all',
+    path: '/api/project/all',
     method: 'post',
     func: function(req, res) {
-        console.log('request api/todo/all', req.body);
-        var todos = todo.all(req.body)
-        var r = JSON.stringify(todos)
+        console.log('request api/project/all', req.body);
+        var projects = project.all(req.body)
+        var r = JSON.stringify(projects)
         res.send(r)
     }
 }
 
 var add = {
-    path: '/api/todo/add',
+    path: '/api/project/add',
     method: 'post',
     func: function(req, res) {
         var form = req.body
-        console.log('request api/todo/add', form);
-        var t = todo.new(form)
+        console.log('request api/project/add', form);
+        var t = project.new(form)
         var r = JSON.stringify(t)
         res.send(r)
     }
 }
 
 var dele = {
-    path: '/api/todo/delete',
+    path: '/api/project/delete',
     method: 'post',
     func: function(req, res) {
         var form = req.body
-        console.log('request api/todo/dele',form);
-        var t = todo.dele(form)
+        console.log('request api/project/dele',form);
+        var t = project.dele(form)
         var r = JSON.stringify(t)
         res.send(r)
     }
 }
 
 var update = {
-    path: '/api/todo/update',
+    path: '/api/project/update',
     method: 'post',
     func: function(req, res) {
         var form = req.body
-        console.log('request api/todo/update',form);
-        var t = todo.update(form)
+        console.log('request api/project/update',form);
+        var t = project.update(form)
         var r = JSON.stringify(t)
         res.send(r)
     }

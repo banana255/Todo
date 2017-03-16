@@ -9,6 +9,7 @@
         <script src='js/ajax.js'></script>
         <script src='js/login.js'></script>
         <script src='js/header.js'></script>
+        <script src='js/projecrt.js'></script>
         <script src='js/todo.js'></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -16,7 +17,7 @@
                 // __mainTodo()
                 __mainLogin()
                 __mainHeader()
-            });
+            })
         </script>
     </head>
     <body>
@@ -38,6 +39,19 @@
             </div>
         </div>
         <!--  Todo -->
+
+        <!-- Project -->
+        <div class="project-main">
+            <!-- todo 输入框 -->
+            <div class="project-form">
+                <input id='id-input-project' type="text"  placeholder="请输入工程">
+                <button id='id-button-project-add' disabled>添加</button>
+            </div>
+            <!-- Project 列表 -->
+            <div id="id-project-container">
+
+            </div>
+        </div>
 
         <!--  footer -->
         <div class="footer">

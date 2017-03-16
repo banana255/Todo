@@ -36,10 +36,18 @@ u.new = function(form) {
     // fs open 的路径相对于 Todo
     m.todoPath = 'db/todo-id' + m.id + '-key-' + m.key + '.json'
     m.projectPath = 'db/project-id' + m.id + '-key-' + m.key + '.json'
-    fs.open(m.path, "w", 0644, function(err,fd){
-    if(err) {
-        throw err
-    }
+
+    // 新建 todoPath & projectPath 2 个文件
+    fs.open(m.todoPath, "w", 0644, function(err,fd){
+        if(err) {
+            throw err
+        }
+        fs.closeSync(fd);
+    })
+    fs.open(m.projectPath, "w", 0644, function(err,fd){
+        if(err) {
+            throw err
+        }
         fs.closeSync(fd);
     })
 
@@ -49,7 +57,8 @@ u.new = function(form) {
 }
 
 u.save = function() {
-    var s = JSON.stringify(this.data)
+    // 序列化 & 4 格缩进
+    var s = JSON.stringify(this.data, '', 4)
     fs.writeFile(loginFilePath, s, (err) => {
         err ? console.log(err) : console.log('保存成功');
     })
@@ -100,6 +109,7 @@ u.findByKey = function(form) {
     for (var i = 0; i < this.data.length; i++) {
         // console.log(this.data[i].key , form.key)
         // console.log(typeof this.data[i].key , typeof form.key)
+        // console.log('findByKey', form);
         if(this.data[i].key === form.key) {
             return {
                 isKey: true,
@@ -109,7 +119,7 @@ u.findByKey = function(form) {
             }
         }
     }
-    return {isKey: false}
+    return
 }
 
 module.exports = u

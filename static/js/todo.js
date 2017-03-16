@@ -1,3 +1,36 @@
+var insertTodo = function(item) {
+    // 添加到 container 中
+    var todoContainer = e('#id-div-container')
+    var t = templateTodo(item)
+    // 添加元素
+    todoContainer.insertAdjacentHTML('afterbegin', t);
+}
+
+var templateTodo = function(item) {
+    var i = item.finish ? 'done' : ''
+    var time = timeFormat(item.created_time)
+    var t = `
+        <div class='todo-cell ${i}' data-id=${item.id}>
+            <button class='todo-done'>完成</button>
+            <button class='todo-delete'>删除</button>
+            <button class='todo-edit'>更新</button>
+            <span class='todo-content'>
+                <span class='task-time' >${time}</span>
+                <span class='todo-task' contenteditable='false'>${item.task}</span>
+            </span>
+        </div>
+    `
+    return t
+}
+
+var zfill = function(string) {
+    var s = String(string)
+    if (s.length == 1) {
+        s = '0' + s
+    }
+    return s
+}
+
 var bindBlur = function() {
     var todoContainer = e('#id-div-container')
     todoContainer.addEventListener('blur', function(event){
@@ -39,7 +72,6 @@ var bindAddButton = function() {
     })
 }
 
-
 var bindAddkeyUp = function() {
     var input = e('#id-input-todo')
     var button = e('#id-button-add')
@@ -65,7 +97,7 @@ var bindUpdateKeyEnter = function() {
             if(event.key === 'Enter') {
                 log('按了回车')
                 target.blur()
-                // 阻止默认行为的发生, 也就是不插入回车
+                // 阻止默认行为的发生, 不插入回车
                 event.preventDefault()
                 var taskContent = target.parentElement
                 var todoDiv = taskContent.parentElement
@@ -111,39 +143,6 @@ var bindDoneDeleteEdit = function() {
     })
 }
 
-var insertTodo = function(item) {
-    // 添加到 container 中
-    var todoContainer = e('#id-div-container')
-    var t = templateTodo(item)
-    // 添加元素
-    todoContainer.insertAdjacentHTML('afterbegin', t);
-}
-
-var templateTodo = function(item) {
-    var i = item.finish ? 'done' : ''
-    var time = timeFormat(item.created_time)
-    var t = `
-        <div class='todo-cell ${i}' data-id=${item.id}>
-            <button class='todo-done'>完成</button>
-            <button class='todo-delete'>删除</button>
-            <button class='todo-edit'>更新</button>
-            <span class='todo-content'>
-                <span class='task-time' >${time}</span>
-                <span class='todo-task' contenteditable='false'>${item.task}</span>
-            </span>
-        </div>
-    `
-    return t
-}
-
-var zfill = function(string) {
-    var s = String(string)
-    if (s.length == 1) {
-        s = '0' + s
-    }
-    return s
-}
-
 // 程序加载后, 加载 todoList 并且添加到页面中
 var initBrower = function() {
     todo.all((res) => {
@@ -168,7 +167,6 @@ var bindEventsTodo = function() {
 
     bindAddkeyUp()
 }
-
 
 var __mainTodo = function() {
     initBrower()

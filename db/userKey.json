@@ -1,1 +1,14 @@
-[{"key":"8366118","id":1,"path":"db/todo-id1-key-8366118.json"},{"key":"123","id":2,"path":"db/todo-id2-key-123.json"},{"key":"234","id":3,"path":"db/todo-id3-key-234.json"}]
+[
+    {
+        "key": "888",
+        "id": 1,
+        "todoPath": "db/todo-id1-key-888.json",
+        "projectPath": "db/project-id1-key-888.json"
+    },
+    {
+        "key": "999",
+        "id": 2,
+        "todoPath": "db/todo-id2-key-999.json",
+        "projectPath": "db/project-id2-key-999.json"
+    }
+]

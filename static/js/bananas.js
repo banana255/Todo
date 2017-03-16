@@ -7,7 +7,7 @@ var e = (sel) => document.querySelector(sel)
 var es = (sel) => document.querySelectorAll(sel)
 
 var inputRequired = function(input, button) {
-    input.addEventListener('keyup', function(event){
+    input.addEventListener('input', function(event){
         // log('keyup')
         if (input.value.length > 0) {
             button.removeAttribute('disabled')
