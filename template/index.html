@@ -6,17 +6,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="stylesheet" href="css/todo.css">
         <script src='js/bananas.js'></script>
+        <script src='lib/fastclick.js'></script>
         <script src='js/ajax.js'></script>
         <script src='js/login.js'></script>
         <script src='js/header.js'></script>
-        <script src='js/projecrt.js'></script>
+        <script src='js/project.js'></script>
         <script src='js/todo.js'></script>
+        <script src='js/main.js'></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
+                // 引入 FastClick
+                FastClick.attach(document.body);
                 // do work
-                // __mainTodo()
-                __mainLogin()
-                __mainHeader()
+                __main()
             })
         </script>
     </head>
@@ -25,39 +27,64 @@
         <div class="header">
             <span class='login-exit'>退出</span>
         </div>
-
-        <!--  Todo -->
-        <div class="todo-main">
-            <!-- todo 输入框 -->
-            <div class="todo-form">
-                <input id='id-input-todo' type="text"  placeholder="请输入任务">
-                <button id='id-button-add' disabled>添加</button>
-            </div>
-            <!-- todo 列表 -->
-            <div id="id-div-container">
-
-            </div>
-        </div>
-        <!--  Todo -->
+        <div class="header-blank"></div>
 
         <!-- Project -->
         <div class="project-main">
-            <!-- todo 输入框 -->
+            <!-- project 输入框 -->
             <div class="project-form">
                 <input id='id-input-project' type="text"  placeholder="新建工程">
-                <button id='id-button-project-add' disabled>添加</button>
+                <button id='id-button-project-add'>添加</button>
             </div>
             <!-- Project 列表 -->
             <div id="id-project-container">
 
+                <!-- <div class="project-item" data-id='5'>
+                    <div class="project-header">
+                        <div class="project-name">
+                            node 工程
+                        </div>
+                        <span class="cannot-select show-more show-open"> < </span>
+                    </div>
+                    <div class="project-item-container">
+                        <div class="todo-add">
+                            <input class='input-todo' placeholder="请输入新任务">
+                            <button class="button-add-todo">添加</button>
+                        </div>
+                        <div class="project-todos">
+                            <div class='todo-cell'>
+                                <span class='todo-content'>
+                                    <span class='todo-task' contenteditable='false'>吃饭饭</span>
+                                    <span class='task-time'>17/3/23</span>
+                                </span>
+                                <span class='todo-cell-button-group'>
+                                    <button class='todo-done'>完成</button>
+                                    <button class='todo-delete'>删除</button>
+                                    <button class='todo-edit'>更新</button>
+                                </span>
+                            </div>
+                            <div class='todo-cell'>
+                                <span class='todo-content'>
+                                    <span class='todo-task' contenteditable='false'>喝水水</span>
+                                    <span class='task-time'>17/3/23</span>
+                                </span>
+                                <span class='todo-cell-button-group'>
+                                    <button class='todo-done'>完成</button>
+                                    <button class='todo-delete'>删除</button>
+                                    <button class='todo-edit'>更新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
             </div>
         </div>
+        <!-- Project -->
 
         <!--  footer -->
-        <div class="footer">
+        <div class="footer-blank"></div>
+        <div class="footer"></div>
 
-        </div>
-
-        <!-- <button class='css_button' name="button">提交</button> -->
     </body>
 </html>

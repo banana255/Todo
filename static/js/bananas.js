@@ -1,12 +1,12 @@
-var log = function() {
+const log = function() {
     console.log.apply(console, arguments)
 }
 
-var e = (sel) => document.querySelector(sel)
+const e = (sel) => document.querySelector(sel)
 
-var es = (sel) => document.querySelectorAll(sel)
+const es = (sel) => document.querySelectorAll(sel)
 
-var inputRequired = function(input, button) {
+const inputRequired = function(input, button) {
     input.addEventListener('input', function(event){
         // log('keyup')
         if (input.value.length > 0) {
@@ -18,7 +18,7 @@ var inputRequired = function(input, button) {
 }
 
 // 开关元素的某个 class
-var toggleClass = function(element, className) {
+const toggleClass = function(element, className) {
     if (element.classList.contains(className)) {
         element.classList.remove(className)
     } else {
@@ -26,7 +26,7 @@ var toggleClass = function(element, className) {
     }
 }
 
-var currentTime = function() {
+const currentTime = function() {
     var d = new Date()
     var month = zfill(d.getMonth() + 1)
     var date = zfill(d.getDate())
@@ -37,7 +37,7 @@ var currentTime = function() {
     return timeString
 }
 
-var timeFormat = function(time) {
+const timeFormat = function(time) {
     var d = new Date(time * 1000)
     var month = zfill(d.getMonth() + 1)
     var date = zfill(d.getDate())
@@ -48,13 +48,14 @@ var timeFormat = function(time) {
     return timeString
 }
 
-var callback = function(response) {
-        console.log('response', response);
-        var r = JSON.parse(response)
-        console.log('r', r);
+// log response
+const callback = function(response) {
+    console.log('response', response);
+    var r = JSON.parse(response)
+    console.log('r', r);
 }
 
-var ajax = function(request) {
+const ajax = function(request) {
     /*
     request 是一个 object, 有如下属性
         method, 请求的方法, string
@@ -78,4 +79,32 @@ var ajax = function(request) {
     } else {
         r.send(request.data)
     }
+}
+
+// 通过 某一 Obj.key=xx 从 Array 中找出 符合条件的条件的 Object 并返回
+const objectByKeyFromArray = function(keyWord, array) {
+    // { id: 2}
+    // log('objectByKeyFromArray', keyWord, array)
+    let key = Object.keys(keyWord)[0]
+    for (var i = 0; i < array.length; i++) {
+        let a = array[i]
+        if (a[key] == keyWord[key]) {
+            return a
+        }
+    }
+    return false
+}
+// test
+// var a = [{a: 1},{a: 2}]
+// var k = {a:1}
+// objectByKeyFromArray(k, a)
+
+// 补全，将 string 用 key 补全左边，直至长度为 length
+const zfill = function(string, length=2, key='0') {
+    let s = String(string)
+    let l = Number(length) - s.length
+    for (let i = 0; i < l; i++) {
+        s = key + s
+    }
+    return s
 }

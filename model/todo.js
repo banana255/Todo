@@ -15,7 +15,7 @@ const ModelTodo = function(form) {
     this.task = form.task || ''
     this.created_time = form.created_time || Math.floor(new Date() / 1000)
     this.finish = form.finish || false
-    this.project_id = form.project_id || null
+    this.project_id = Number(form.project_id) || null
 }
 
 const loadTodos = function(path) {
@@ -82,14 +82,14 @@ t.indexOfTodos = function(id) {
             return  i
         }
     }
-    console.log('id is no found in Todos');
+    console.log('id is no found in Todos!');
     return false
 }
 
 t.dele = function(form) {
     this.all(form)
     if (!form.id) {
-        console.log('delete id is no defined!');
+        console.log('delete id is no defined in Todos!');
         return false
     } else {
         var index = this.indexOfTodos(form.id)
@@ -105,7 +105,7 @@ t.dele = function(form) {
 t.update = function(form) {
     this.all(form)
     if (!form.id) {
-        console.log('update id is no defined!');
+        console.log('update id is no defined in Todos!');
         return false
     } else {
         var index = this.indexOfTodos(form.id)

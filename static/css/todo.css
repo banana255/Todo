@@ -6,26 +6,13 @@ body {
     height: 100vh;
 }
 
-/* 完成 todo */
-.done {
-    color: gray;
-    text-decoration: line-through;
+.hide {
+    display: none;
 }
 
-.todo-main {
-    text-align: center;
-}
-
-.todo-form {
-    margin: 1rem;
-}
-
-#id-div-container {
-    text-align: left;
-}
-
-.task-time {
-    color: gray;
+.cannot-select {
+    user-select: none;
+    -webkit-user-select: none
 }
 
 /* todo-login */
@@ -99,8 +86,17 @@ body {
 }
 
 /* login exit*/
+
+/*  header */
 .header {
     background: black;
+    height: 4rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-blank {
     height: 4rem;
 }
 
@@ -128,51 +124,107 @@ body {
     background: black !important;
 }
 
+/* header end */
+
 /*footer*/
 .footer {
     background: black;
     height: 3rem;
-    position: absolute;
+    position: fixed;
     width: 100%;
     bottom: 0rem;
+    bottom: 0%
 }
 
-.css_button {
-   padding: 23px 46px;
-   border: 1px solid #C7C7C7;
-   background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#050505));
-   background: -webkit-linear-gradient(top, #FFFFFF, #050505);
-   background: -moz-linear-gradient(top, #FFFFFF, #050505);
-   background: -ms-linear-gradient(top, #FFFFFF, #050505);
-   background: -o-linear-gradient(top, #FFFFFF, #050505);
-   background-color: #050505;
-   box-shadow: 0px 7px 2px -5px #1A1A1A, inset 0px 0px 10px #787777;
-   -webkit-box-shadow: 0px 7px 2px -5px #1A1A1A, inset 0px 0px 10px #787777;
-   -moz-box-shadow: 0px 7px 2px -5px #1A1A1A, inset 0px 0px 10px #787777;
-   -webkit-border-radius: 14px;
-   -moz-border-radius: 14px;
-   border-radius: 14px;
-   text-shadow: #0F0E0E 1px 1px 0px;
-   color: #080000;
-   font-size: 14px;
-   font-family: Arial;
-   text-decoration: none;
-   font-weight: bold;
-   -webkit-transition: 0.2s;
-   -moz-transition: 0.2s;
-   -o-transition: 0.2s;
-   cursor: pointer;
-   }
-.css_button:hover {
-   background: none;
-   background-color: #050505;
-   box-shadow: 0px 0px 5px 0px #AAAAAA;
-   -webkit-box-shadow: 0px 0px 5px 0px #AAAAAA;
-   -moz-box-shadow: 0px 0px 5px 0px #AAAAAA;
-   border: 1px solid #ffffff;
-   color: #FFFFFF;
-   }
-.css_button:active {
-   top: 1px;
-   position: relative;
-   }
+.footer-blank {
+    height: 3rem;
+}
+
+/*  project-main */
+.project-form {
+    text-align: center;
+    line-height: 3rem;
+    background: #a7a7a7;
+}
+
+.project-item {
+    background: #eeeded;
+    padding: 1rem;
+    border-radius: 14px;
+}
+
+.project-item + .project-item {
+    margin: 1rem 0.2rem;
+
+}
+
+.project-header {
+    position: relative;
+    height: 3rem;
+}
+
+.project-name {
+    background: #414141;
+    color: white;
+    line-height: 3rem;
+    padding-left: 1rem;
+    font-size: 1.2rem;
+}
+
+.show-more {
+    display: inline-block;
+    position: absolute;
+    right: 5%;
+    width: 2rem;
+    line-height: 3rem;
+    top: 0%;
+    color: white;
+    transition: transform 0.3s;
+    text-align: center;
+    font-family: cursive;
+}
+
+.show-open {
+    transform: rotateZ(-90deg);
+}
+
+.project-item-container {
+    transition: 0.3s height;
+    overflow: hidden;
+}
+
+.hide-height {
+    height: 0 !important;
+}
+
+.project-todos {
+
+}
+
+.todo-cell {
+    margin-left: 1rem;
+    line-height: 3rem;
+}
+
+.todo-cell + .todo-cell {
+    border-top: 1px lightgray solid;
+}
+
+/* 完成 todo */
+.done {
+    color: gray;
+    text-decoration: line-through;
+}
+
+.task-time {
+    color: gray;
+}
+
+.todo-task {
+    text-align: right;
+}
+
+.todo-add {
+    text-align: center;
+    line-height: 2rem;
+}

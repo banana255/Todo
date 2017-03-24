@@ -16,6 +16,8 @@ const ModelProject = function(form) {
     this.author = form.author || ''
     // 0 为 开发中，  1 为 开发完
     this.status = form.status || 0
+    // true 为收起， false 为张开
+    this.isSort = form.isSort || false
 }
 
 const loadFiles = function(path) {
@@ -114,7 +116,7 @@ p.indexOfProjects = function(id) {
 p.dele = function(form) {
     this.all(form)
     if (!form.id) {
-        console.log('delete id is no defined!');
+        console.log('delete id is no defined in Projects!');
         return false
     } else {
         var index = this.indexOfProjects(form.id)
@@ -131,12 +133,13 @@ p.dele = function(form) {
 p.update = function(form) {
     this.all(form)
     if (!form.id) {
-        console.log('update id is no defined!');
+        console.log('update id is no defined in Projects!');
         return false
     } else {
         var index = this.indexOfProjects(form.id)
         if (index !== false) {
             this.data[index].name = form.name || this.data[index].name
+            this.data[index].isSort = form.isSort || this.data[index].isSort
             this.save()
             return this.data[index]
         }

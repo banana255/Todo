@@ -1,5 +1,5 @@
 // 检测 input 是否有输入
-var bindLoginkeyUp = function() {
+const bindLoginkeyUp = function() {
     var input = e('#id-todoLogin-input')
     var button = e('#id-todoLogin-confirm')
     inputRequired(input, button)
@@ -8,13 +8,13 @@ var bindLoginkeyUp = function() {
     })
 }
 
-var saveKey = function(key) {
+const saveKey = function(key) {
     var k = JSON.stringify(key)
     localStorage._key = k
     todo.key = key
 }
 
-var loadKey = function() {
+const loadKey = function() {
     var k = localStorage._key ?  JSON.parse(localStorage._key) : undefined
     if (k) {
         todo.key = k
@@ -22,12 +22,12 @@ var loadKey = function() {
     return k
 }
 
-var deleKey = function() {
+const deleKey = function() {
     localStorage._key = false
     todo.key = undefined
 }
 
-var loginTemplete = function() {
+const loginTemplete = function() {
     return `
     <!-- Login -->
     <div class="todo-login">
@@ -48,13 +48,13 @@ var loginTemplete = function() {
     `
 }
 
-var insertLogin = function() {
+const insertLogin = function() {
     var h = loginTemplete()
     var body = e('body')
     body.innerHTML += h
 }
 
-var bindLoginConfirm = function() {
+const bindLoginConfirm = function() {
     var button = e('#id-todoLogin-confirm')
     var input = e('#id-todoLogin-input')
     button.addEventListener('click', function(event){
@@ -70,7 +70,6 @@ var bindLoginConfirm = function() {
                 e('.todo-login').remove()
                 saveKey(form.key)
                 __mainTodo()
-
             } else {
                 // 口令错误
                 log('口令错误')
@@ -83,14 +82,14 @@ var bindLoginConfirm = function() {
     })
 }
 
-var bindEventsLogin = function() {
+const bindEventsLogin = function() {
 
     bindLoginkeyUp()
 
     bindLoginConfirm()
 }
 
-var initLogin = function() {
+const initLogin = function() {
     if (!loadKey()) {
         log('无口令', loadKey())
         insertLogin()
@@ -101,6 +100,6 @@ var initLogin = function() {
     }
 }
 
-var __mainLogin = function() {
-    initLogin()
+const __mainLogin = function() {
+    return initLogin()
 }
