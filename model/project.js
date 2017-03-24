@@ -140,6 +140,10 @@ p.update = function(form) {
         if (index !== false) {
             this.data[index].name = form.name || this.data[index].name
             this.data[index].isSort = form.isSort || this.data[index].isSort
+            if (form.status !== undefined) {
+                this.data[index].status = form.status
+            }
+            // this.data[index].status = form.status || this.data[index].status
             this.save()
             return this.data[index]
         }

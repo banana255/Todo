@@ -161,14 +161,19 @@ body {
 .project-header {
     position: relative;
     height: 3rem;
+    background: #414141;
 }
 
 .project-name {
-    background: #414141;
+    display: inline-block;
     color: white;
     line-height: 3rem;
     padding-left: 1rem;
     font-size: 1.2rem;
+}
+
+.proj-button-group {
+    display: inline-block;
 }
 
 .show-more {

@@ -133,7 +133,7 @@ const bindShowMore = function() {
     })
 }
 
-const bindBlur = function() {
+const bindTodoBlur = function() {
     e('#id-project-container').addEventListener('blur', function(event){
         // log('container blur', event, event.target)
         var target = event.target
@@ -143,7 +143,11 @@ const bindBlur = function() {
     }, true)
 }
 
-const bindAddProjButton = function() {
+const bindProjBlur = function() {
+    // TODO:
+}
+
+const bindProjAddButton = function() {
     e('#id-button-project-add').addEventListener('click', function(event){
         log('bindAddProjButton')
         let t = event.target
@@ -155,15 +159,17 @@ const bindAddProjButton = function() {
         let item = {
             name: v
         }
+        input.setAttribute('disabled', '')
         todo.pAdd(item, function(res){
             let r = JSON.parse(res)
-            log(r)
+            log('bindAddProjButton res', r)
+            input.removeAttribute('disabled')
             insertProject(r)
         })
     })
 }
 
-const bindAddTodoButton = function() {
+const bindTodoAddButton = function() {
     // 给 add button 绑定添加 todo 事件
     e('.project-main').addEventListener('click', function(event){
         let t = event.target
@@ -199,7 +205,7 @@ const bindAddTodoButton = function() {
     })
 }
 
-const bindUpdateKeyEnter = function() {
+const bindTodoUpdateKeyEnter = function() {
     var container = e('#id-project-container')
     container.addEventListener('keydown', function(event){
         // log('container keydown', event, event.target)
@@ -216,9 +222,27 @@ const bindUpdateKeyEnter = function() {
     })
 }
 
-const bindDoneDeleteEdit = function() {
-    var todoContainer = e('#id-project-container')
-    todoContainer.addEventListener('click', function(event){
+const bindProjUpdateKeyEnter = function() {
+    // TODO: ***************************
+    var container = e('#id-project-container')
+    container.addEventListener('keydown', function(event){
+        // log('container keydown', event, event.target)
+        var target = event.target
+        if (target.classList.contains('project-name')) {
+            if(event.keyCode === 13) {
+                log('按了回车')
+                // 阻止默认行为的发生, 不插入回车
+                event.preventDefault()
+                target.blur()
+                updateTodo(target)
+            }
+        }
+    })
+}
+
+const bindTodoDoneDeleteEdit = function() {
+    var projContainer = e('#id-project-container')
+    projContainer.addEventListener('click', function(event){
         var target = event.target
         // 按了 完成 按钮
         if(target.classList.contains('todo-done')) {
@@ -264,6 +288,65 @@ const bindDoneDeleteEdit = function() {
     })
 }
 
+const getDataFromProjHead = function(target) {
+    let d = {}
+    d.pDiv = target.parentElement.parentElement.parentElement
+    d.pId = Number(d.pDiv.dataset.id)
+    d.pItem = objectByKeyFromArray({id: d.pId}, todo.projectList)
+    return d
+
+}
+
+const bindProjDoneDeleteEdit = function() {
+    var projContainer = e('#id-project-container')
+    projContainer.addEventListener('click', function(event){
+        var target = event.target
+        // 按了 完成 按钮
+        if(target.classList.contains('proj-done')) {
+            log('proj-done')
+            var d = getDataFromProjHead(target)
+            var item = {
+                id: d.pId,
+            }
+            item.status = d.pItem.status == 0 ? 1 : 0
+            log('item is', item)
+            todo.pUpdate(item, function(res){
+                var i = JSON.parse(res)
+                d.pItem.status = i.status
+                log('d.pItem.status', d.pItem.status)
+                // toggleClass(d.todoDiv, 'done')
+            })
+        // 按了 删除 按钮
+        } else if (target.classList.contains('proj-delete')) {
+            log('proj-delete')
+            var d = getDataFromProjHead(target)
+            var item = {
+                id: d.pId,
+            }
+            // console.log('delete item', item);
+            todo.pDele(item, function(res){
+                var i = JSON.parse(res)
+                // log('delete proj', i)
+                todo.pAll(function(res){
+                    var i = JSON.parse(res)
+                    todo.projectList = i
+                    d.pDiv.remove()
+                })
+            })
+        // 按了 编辑 按钮
+        } else if(target.classList.contains('proj-edit')) {
+            log('proj-edit')
+            var d = getDataFromProjHead(target)
+            var s = d.pDiv.querySelector('.project-name')
+            // var s = d.todoDiv.children[3].children[1]
+            // log('span is', s)
+            s.setAttribute('contenteditable', 'true')
+            s.focus()
+            // var selection = getSelection()
+        }
+    })
+}
+
 // 程序加载后, 加载 todoList 并且添加到页面中
 const initBrower = function() {
     todo.pAll((res) => {
@@ -279,15 +362,16 @@ const initBrower = function() {
 
 const bindEventsTodo = function() {
 
-    bindAddTodoButton()
+    bindTodoAddButton()
+    bindTodoDoneDeleteEdit()
+    bindTodoUpdateKeyEnter()
+    bindTodoBlur()
 
-    bindAddProjButton()
+    bindProjAddButton()
+    bindProjDoneDeleteEdit()
+    bindProjUpdateKeyEnter()
+    bindProjBlur()
 
-    bindUpdateKeyEnter()
-
-    bindDoneDeleteEdit()
-
-    bindBlur()
 
     bindShowMore()
 }
