@@ -63,7 +63,8 @@ t.new = function(form) {
     } else {
         m.id = last.id + 1
     }
-    this.data.push(m)
+    // this.data.push(m)
+    this.data.unshift(m)
     this.save()
     return m
 }
@@ -76,6 +77,7 @@ t.save = function() {
 }
 
 t.indexOfTodos = function(id) {
+    id = Number(id)
     for (var i = 0; i < this.data.length; i++) {
         if(t.data[i].id == id) {
             // console.log('indexOfTodos', i);

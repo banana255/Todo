@@ -139,11 +139,15 @@ p.update = function(form) {
         var index = this.indexOfProjects(form.id)
         if (index !== false) {
             this.data[index].name = form.name || this.data[index].name
-            this.data[index].isSort = form.isSort || this.data[index].isSort
+            if (form.isSort !== undefined) {
+                this.data[index].isSort = form.isSort
+            }
+            // this.data[index].isSort = form.isSort || this.data[index].isSort
             if (form.status !== undefined) {
                 this.data[index].status = form.status
             }
             // this.data[index].status = form.status || this.data[index].status
+            // console.log('pUpdate', this.data[index]);
             this.save()
             return this.data[index]
         }

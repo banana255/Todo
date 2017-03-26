@@ -46,9 +46,12 @@ const templateProject = function(p) {
     let t = `
     <div class="project-item" data-id=${p.id}>
         <div class="project-header">
-            <div class="project-name">
-                ${p.name}
-            </div>
+            <span class="project-name">${p.name}</span>
+            <span class="proj-button-group">
+                <button class='proj-done'>完成</button>
+                <button class='proj-delete'>删除</button>
+                <button class='proj-edit'>编辑</button>
+            </span>
             <span class="cannot-select show-more ${open.sm}"> < </span>
         </div>
         <div class="project-item-container ${open.hh}" style='height: ${containHeight}rem'>
@@ -65,19 +68,6 @@ const templateProject = function(p) {
     return t
 }
 
-const insertTodo = function(item, tDiv) {
-    log('insertTodo', tDiv)
-    // 添加到 container 中
-    var t = templateTodo(item)
-    // 添加元素
-    tDiv.insertAdjacentHTML('afterbegin', t)
-}
-
-const insertProject = function(p) {
-    let projectContainer = e('#id-project-container')
-    let t = templateProject(p)
-    projectContainer.insertAdjacentHTML('afterbegin', t)
-}
 
 const getDataFromTodoCell = function(target) {
     let d = {}
@@ -92,6 +82,14 @@ const getDataFromTodoCell = function(target) {
     return d
 }
 
+const insertTodo = function(item, tDiv) {
+    log('insertTodo', tDiv)
+    // 添加到 container 中
+    var t = templateTodo(item)
+    // 添加元素
+    tDiv.insertAdjacentHTML('afterbegin', t)
+}
+
 const updateTodo = function(target) {
     var d = getDataFromTodoCell(target)
     // 把元素在 todoList 中更新
@@ -99,7 +97,7 @@ const updateTodo = function(target) {
         task: target.innerHTML,
         id: d.todoDiv.dataset.id,
     }
-    // log('item', item)
+    log('item', item)
     target.setAttribute('contenteditable', 'false')
     todo.tUpdate(item, function(res){
         // console.log(res)
@@ -108,30 +106,46 @@ const updateTodo = function(target) {
     })
 }
 
-const bindShowMore = function() {
-    e('#id-project-container').addEventListener('click', function(event){
-        let t = event.target
-        if (t.classList.contains('show-more')) {
-            t.classList.toggle('show-open')
-            let pDiv = t.parentElement.parentElement
-            let c = pDiv.querySelector('.project-item-container')
-            // log('pDiv', pDiv, 'container', c)
-            c.classList.toggle('hide-height')
-            let pId = pDiv.dataset.id
-            let item = {
-                id: pId,
-                isSort: !t.classList.contains('show-open')
-            }
-            // log('bindShowMore', item)
-            todo.pUpdate(item, function(res){
-                let r = JSON.parse(res)
-                // console.log('project update', r);
-                let pItem = objectByKeyFromArray({id: pId}, todo.projectList)
-                pItem.isSort = r.isSort
-            })
-        }
+const updateTodoHeight = function(tsDiv, pItem) {
+    let h = pItem.todos.length * 3 + 2
+    console.log('updateTodoHeight', tsDiv, h);
+    tsDiv.parentElement.style.height = h + 'rem'
+}
+
+
+const getDataFromProjHead = function(target) {
+    let d = {}
+    d.pDiv = target.parentElement.parentElement.parentElement
+    d.pId = Number(d.pDiv.dataset.id)
+    d.pItem = objectByKeyFromArray({id: d.pId}, todo.projectList)
+    return d
+
+}
+
+const insertProject = function(p) {
+    let projectContainer = e('#id-project-container')
+    let t = templateProject(p)
+    projectContainer.insertAdjacentHTML('afterbegin', t)
+}
+
+const updateProj = function(target) {
+    let pDiv = target.parentElement.parentElement
+    let pId = pDiv.dataset.id
+    let pItem = objectByKeyFromArray({id: pId}, todo.projectList)
+    // 把元素在 todoList 中更新
+    let item = {
+        task: target.innerText,
+        id: pId,
+    }
+    // log('item', item)
+    target.setAttribute('contenteditable', 'false')
+    todo.pUpdate(item, function(res){
+        // console.log(res)
+        let r = JSON.parse(res)
+        pItem.task = r.task
     })
 }
+
 
 const bindTodoBlur = function() {
     e('#id-project-container').addEventListener('blur', function(event){
@@ -141,32 +155,6 @@ const bindTodoBlur = function() {
             updateTodo(target)
         }
     }, true)
-}
-
-const bindProjBlur = function() {
-    // TODO:
-}
-
-const bindProjAddButton = function() {
-    e('#id-button-project-add').addEventListener('click', function(event){
-        log('bindAddProjButton')
-        let t = event.target
-        let input = e('#id-input-project')
-        let v = input.value
-        if (v.length == 0) {
-            return
-        }
-        let item = {
-            name: v
-        }
-        input.setAttribute('disabled', '')
-        todo.pAdd(item, function(res){
-            let r = JSON.parse(res)
-            log('bindAddProjButton res', r)
-            input.removeAttribute('disabled')
-            insertProject(r)
-        })
-    })
 }
 
 const bindTodoAddButton = function() {
@@ -198,8 +186,9 @@ const bindTodoAddButton = function() {
                 pItem.todos.push(r)
                 todoInput.value = ''
                 addbutton.removeAttribute('disabled')
-                let tDiv = pDiv.querySelector('.project-todos')
-                insertTodo(r, tDiv)
+                let tsDiv = pDiv.querySelector('.project-todos')
+                insertTodo(r, tsDiv)
+                updateTodoHeight(tsDiv, pItem)
             })
         }
     })
@@ -215,26 +204,9 @@ const bindTodoUpdateKeyEnter = function() {
                 log('按了回车')
                 // 阻止默认行为的发生, 不插入回车
                 event.preventDefault()
+                // 触发 blur 事件
                 target.blur()
-                updateTodo(target)
-            }
-        }
-    })
-}
-
-const bindProjUpdateKeyEnter = function() {
-    // TODO: ***************************
-    var container = e('#id-project-container')
-    container.addEventListener('keydown', function(event){
-        // log('container keydown', event, event.target)
-        var target = event.target
-        if (target.classList.contains('project-name')) {
-            if(event.keyCode === 13) {
-                log('按了回车')
-                // 阻止默认行为的发生, 不插入回车
-                event.preventDefault()
-                target.blur()
-                updateTodo(target)
+                // updateTodo(target)
             }
         }
     })
@@ -271,6 +243,8 @@ const bindTodoDoneDeleteEdit = function() {
                 todo.pAll(function(res){
                     var i = JSON.parse(res)
                     todo.projectList = i
+                    d.pItem.todos.splice(0, 1)
+                    updateTodoHeight(d.todoDiv.parentElement, d.pItem)
                     d.todoDiv.remove()
                 })
             })
@@ -288,13 +262,56 @@ const bindTodoDoneDeleteEdit = function() {
     })
 }
 
-const getDataFromProjHead = function(target) {
-    let d = {}
-    d.pDiv = target.parentElement.parentElement.parentElement
-    d.pId = Number(d.pDiv.dataset.id)
-    d.pItem = objectByKeyFromArray({id: d.pId}, todo.projectList)
-    return d
 
+const bindProjBlur = function() {
+    e('#id-project-container').addEventListener('blur', function(event){
+        // log('container blur', event, event.target)
+        var target = event.target
+        if (target.classList.contains('project-name')) {
+            updateProj(target)
+        }
+    }, true)
+}
+
+const bindProjAddButton = function() {
+    e('#id-button-project-add').addEventListener('click', function(event){
+        log('bindAddProjButton')
+        let t = event.target
+        let input = e('#id-input-project')
+        let v = input.value
+        if (v.length == 0) {
+            return
+        }
+        let item = {
+            name: v
+        }
+        input.setAttribute('disabled', '')
+        todo.pAdd(item, function(res){
+            let r = JSON.parse(res)
+            log('bindAddProjButton res', r)
+            input.removeAttribute('disabled')
+            insertProject(r)
+        })
+    })
+}
+
+const bindProjUpdateKeyEnter = function() {
+    // TODO: ***************************
+    var container = e('#id-project-container')
+    container.addEventListener('keydown', function(event){
+        // log('container keydown', event, event.target)
+        var target = event.target
+        if (target.classList.contains('project-name')) {
+            if(event.keyCode === 13) {
+                log('按了回车')
+                // 阻止默认行为的发生, 不插入回车
+                event.preventDefault()
+                // 触发 blur 事件
+                target.blur()
+                // updateProj(target)
+            }
+        }
+    })
 }
 
 const bindProjDoneDeleteEdit = function() {
@@ -343,6 +360,31 @@ const bindProjDoneDeleteEdit = function() {
             s.setAttribute('contenteditable', 'true')
             s.focus()
             // var selection = getSelection()
+        }
+    })
+}
+
+const bindShowMore = function() {
+    e('#id-project-container').addEventListener('click', function(event){
+        let t = event.target
+        if (t.classList.contains('show-more')) {
+            t.classList.toggle('show-open')
+            let pDiv = t.parentElement.parentElement
+            let c = pDiv.querySelector('.project-item-container')
+            // log('pDiv', pDiv, 'container', c)
+            c.classList.toggle('hide-height')
+            let pId = pDiv.dataset.id
+            let item = {
+                id: pId,
+                isSort: !t.classList.contains('show-open')
+            }
+            // log('bindShowMore', item)
+            todo.pUpdate(item, function(res){
+                let r = JSON.parse(res)
+                // console.log('project update', r);
+                let pItem = objectByKeyFromArray({id: pId}, todo.projectList)
+                pItem.isSort = r.isSort
+            })
         }
     })
 }
