@@ -90,6 +90,7 @@ p.new = function(form) {
     } else {
         m.id = last.id + 1
     }
+    m.todos = []
     this.data.push(m)
     this.save()
     return m

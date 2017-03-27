@@ -177,12 +177,12 @@ const bindTodoAddButton = function() {
                 'task': task,
                 'project_id': pId,
             }
-            // log('todo-add', item)
+            // log('todo-add', item, pItem)
             addbutton.setAttribute('disabled', '')
             // console.log(pItem, 'id', pId, 'pDiv', pDiv);
             todo.tAdd(item, function(res){
                 let r = JSON.parse(res)
-                log('add todo', res)
+                // log('add todo', res)
                 pItem.todos.push(r)
                 todoInput.value = ''
                 addbutton.removeAttribute('disabled')
@@ -290,6 +290,7 @@ const bindProjAddButton = function() {
             let r = JSON.parse(res)
             log('bindAddProjButton res', r)
             input.removeAttribute('disabled')
+            todo.projectList.push(r)
             insertProject(r)
         })
     })

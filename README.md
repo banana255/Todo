@@ -1,5 +1,10 @@
 # Todo
 
+![](todoV1.gif)
+
+
+### v1 版 
+
 运用 DOM 实现  TODO 事件备忘录
 
 1) 添加 todo 事件。
