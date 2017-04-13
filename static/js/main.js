@@ -1,5 +1,7 @@
 const __main = function() {
-    // __mainTodo()
+        // 全局变量 todo
+    window.todo = new Todo()
+
     // 先验证账户，验证通过则自动加载 __mainTodo()
     __mainLogin()
 
@@ -7,6 +9,3 @@ const __main = function() {
     __mainHeader()
 
 }
-
-// 全局变量 todo
-const todo = new Todo()

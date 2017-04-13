@@ -75,7 +75,7 @@ const getDataFromTodoCell = function(target) {
     d.projectDiv = d.todoDiv.parentElement.parentElement.parentElement
     d.proId = Number(d.projectDiv.dataset.id)
     d.todoId = Number(d.todoDiv.dataset.id)
-    d.pItem = objectByKeyFromArray({id: d.proId}, todo.projectList)
+    d.pItem = objectByKeyFromArray({id: d.proId}, window.todo.projectList)
     // log('pItem', pItem)
     d.tItem = objectByKeyFromArray({id: d.todoId}, d.pItem.todos)
     // log('tItem', tItem)
@@ -99,7 +99,7 @@ const updateTodo = function(target) {
     }
     log('item', item)
     target.setAttribute('contenteditable', 'false')
-    todo.tUpdate(item, function(res){
+    window.todo.tUpdate(item, function(res){
         // console.log(res)
         let r = JSON.parse(res)
         d.tItem.task = r.task
@@ -108,7 +108,7 @@ const updateTodo = function(target) {
 
 const updateTodoHeight = function(tsDiv, pItem) {
     let h = pItem.todos.length * 3 + 2
-    console.log('updateTodoHeight', tsDiv, h);
+    // console.log('updateTodoHeight', tsDiv, h);
     tsDiv.parentElement.style.height = h + 'rem'
 }
 
@@ -117,7 +117,7 @@ const getDataFromProjHead = function(target) {
     let d = {}
     d.pDiv = target.parentElement.parentElement.parentElement
     d.pId = Number(d.pDiv.dataset.id)
-    d.pItem = objectByKeyFromArray({id: d.pId}, todo.projectList)
+    d.pItem = objectByKeyFromArray({id: d.pId}, window.todo.projectList)
     return d
 
 }
@@ -131,7 +131,7 @@ const insertProject = function(p) {
 const updateProj = function(target) {
     let pDiv = target.parentElement.parentElement
     let pId = pDiv.dataset.id
-    let pItem = objectByKeyFromArray({id: pId}, todo.projectList)
+    let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
     // 把元素在 todoList 中更新
     let item = {
         task: target.innerText,
@@ -139,7 +139,7 @@ const updateProj = function(target) {
     }
     // log('item', item)
     target.setAttribute('contenteditable', 'false')
-    todo.pUpdate(item, function(res){
+    window.todo.pUpdate(item, function(res){
         // console.log(res)
         let r = JSON.parse(res)
         pItem.task = r.task
@@ -166,7 +166,8 @@ const bindTodoAddButton = function() {
             let addbutton = t
             let pDiv = t.parentElement.parentElement.parentElement
             let pId = pDiv.dataset.id
-            let pItem = objectByKeyFromArray({id: pId}, todo.projectList)
+            let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
+            // console.log('pItem', pItem);
             let todoInput = pDiv.querySelector('.input-todo')
             let task = todoInput.value
             if (task.length == 0) {
@@ -180,7 +181,7 @@ const bindTodoAddButton = function() {
             // log('todo-add', item)
             addbutton.setAttribute('disabled', '')
             // console.log(pItem, 'id', pId, 'pDiv', pDiv);
-            todo.tAdd(item, function(res){
+            window.todo.tAdd(item, function(res){
                 let r = JSON.parse(res)
                 log('add todo', res)
                 pItem.todos.push(r)
@@ -225,7 +226,7 @@ const bindTodoDoneDeleteEdit = function() {
             }
             item.finish = d.todoDiv.classList.contains('done') ? false : true
             // log('item is', item)
-            todo.tUpdate(item, function(res){
+            window.todo.tUpdate(item, function(res){
                 var i = JSON.parse(res)
                 d.tItem.finish = i.finish
                 toggleClass(d.todoDiv, 'done')
@@ -237,12 +238,12 @@ const bindTodoDoneDeleteEdit = function() {
             var item = {
                 id: d.todoId,
             }
-            todo.tDele(item, function(res){
+            window.todo.tDele(item, function(res){
                 var i = JSON.parse(res)
                 // log('delete', i)
-                todo.pAll(function(res){
+                window.todo.pAll(function(res){
                     var i = JSON.parse(res)
-                    todo.projectList = i
+                    window.todo.projectList = i
                     d.pItem.todos.splice(0, 1)
                     updateTodoHeight(d.todoDiv.parentElement, d.pItem)
                     d.todoDiv.remove()
@@ -286,9 +287,10 @@ const bindProjAddButton = function() {
             name: v
         }
         input.setAttribute('disabled', '')
-        todo.pAdd(item, function(res){
+        window.todo.pAdd(item, function(res){
             let r = JSON.parse(res)
             log('bindAddProjButton res', r)
+            window.todo.projectList.push(r)
             input.removeAttribute('disabled')
             insertProject(r)
         })
@@ -296,7 +298,6 @@ const bindProjAddButton = function() {
 }
 
 const bindProjUpdateKeyEnter = function() {
-    // TODO: ***************************
     var container = e('#id-project-container')
     container.addEventListener('keydown', function(event){
         // log('container keydown', event, event.target)
@@ -327,7 +328,7 @@ const bindProjDoneDeleteEdit = function() {
             }
             item.status = d.pItem.status == 0 ? 1 : 0
             log('item is', item)
-            todo.pUpdate(item, function(res){
+            window.todo.pUpdate(item, function(res){
                 var i = JSON.parse(res)
                 d.pItem.status = i.status
                 log('d.pItem.status', d.pItem.status)
@@ -341,12 +342,12 @@ const bindProjDoneDeleteEdit = function() {
                 id: d.pId,
             }
             // console.log('delete item', item);
-            todo.pDele(item, function(res){
+            window.todo.pDele(item, function(res){
                 var i = JSON.parse(res)
                 // log('delete proj', i)
-                todo.pAll(function(res){
+                window.todo.pAll(function(res){
                     var i = JSON.parse(res)
-                    todo.projectList = i
+                    window.todo.projectList = i
                     d.pDiv.remove()
                 })
             })
@@ -379,10 +380,10 @@ const bindShowMore = function() {
                 isSort: !t.classList.contains('show-open')
             }
             // log('bindShowMore', item)
-            todo.pUpdate(item, function(res){
+            window.todo.pUpdate(item, function(res){
                 let r = JSON.parse(res)
                 // console.log('project update', r);
-                let pItem = objectByKeyFromArray({id: pId}, todo.projectList)
+                let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
                 pItem.isSort = r.isSort
             })
         }
@@ -391,11 +392,11 @@ const bindShowMore = function() {
 
 // 程序加载后, 加载 todoList 并且添加到页面中
 const initBrower = function() {
-    todo.pAll((res) => {
+    window.todo.pAll((res) => {
         // log('todo',todo)
-        todo.projectList = JSON.parse(res)
-        for (var i = 0; i < todo.projectList.length; i++) {
-            var p = todo.projectList[i]
+        window.todo.projectList = JSON.parse(res)
+        for (var i = 0; i < window.todo.projectList.length; i++) {
+            var p = window.todo.projectList[i]
             insertProject(p)
             // insertTodo(item)
         }
@@ -413,7 +414,6 @@ const bindEventsTodo = function() {
     bindProjDoneDeleteEdit()
     bindProjUpdateKeyEnter()
     bindProjBlur()
-
 
     bindShowMore()
 }
