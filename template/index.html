@@ -10,9 +10,10 @@
         <script src='js/ajax.js'></script>
         <script src='js/login.js'></script>
         <script src='js/header.js'></script>
-        <script src='js/project.js'></script>
         <script src='js/todo.js'></script>
         <script src='js/main.js'></script>
+        <link rel="stylesheet" href="/css/calendar.css">
+        <script src='js/calendar.js'></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
                 // 引入 FastClick
@@ -25,12 +26,13 @@
     <body>
         <!-- header -->
         <div class="header">
+            <span class='home'>我的</span>
             <span class='login-exit'>退出</span>
         </div>
         <div class="header-blank"></div>
 
         <!-- Project -->
-        <div class="project-main">
+        <div class="project-main hide">
             <!-- project 输入框 -->
             <div class="project-form">
                 <input id='id-input-project' type="text"  placeholder="新建工程">
@@ -84,6 +86,9 @@
             </div>
         </div>
         <!-- Project -->
+
+        <!-- 日历 -->
+        <div class="date" id="calendar"></div>
 
         <!--  footer -->
         <div class="footer-blank"></div>

@@ -29,6 +29,7 @@ const templateTodo = function(item) {
 const templateProject = function(p) {
     let open = {
         sm: 'show-open',
+        // hh 为隐藏 project-container
         hh: ''
     }
     if (p.isSort) {
@@ -67,7 +68,6 @@ const templateProject = function(p) {
     `
     return t
 }
-
 
 const getDataFromTodoCell = function(target) {
     let d = {}
@@ -366,6 +366,7 @@ const bindProjDoneDeleteEdit = function() {
     })
 }
 
+// 是否收起 工程 夹
 const bindShowMore = function() {
     e('#id-project-container').addEventListener('click', function(event){
         let t = event.target
@@ -391,6 +392,20 @@ const bindShowMore = function() {
     })
 }
 
+const bindShowHome = function() {
+    e('.home').addEventListener('click', function(event){
+        console.log('click home');
+        e('.project-main').classList.toggle('hide')
+        e('#calendar').classList.toggle('hide')
+        e('.login-exit').classList.toggle('hide')
+        if (!e('.project-main').classList.contains('hide')) {
+            this.innerHTML = '返回'
+        } else {
+            this.innerHTML = '我的'
+        }
+    })
+}
+
 // 程序加载后, 加载 todoList 并且添加到页面中
 const initBrower = function() {
     window.todo.pAll((res) => {
@@ -402,6 +417,13 @@ const initBrower = function() {
             // insertTodo(item)
         }
     })
+
+    var callback = function(date) {
+        //doSomething
+        console.log('date', date);
+    }
+    // 渲染日历
+    Calendar.init('calendar', new Date(), callback);
 }
 
 const bindEventsTodo = function() {
@@ -417,9 +439,11 @@ const bindEventsTodo = function() {
     bindProjBlur()
 
     bindShowMore()
+    bindShowHome()
 }
 
 const __mainTodo = function() {
+    // 所有关于时间的均以 时间戳 存储(单位 ms)
     initBrower()
     bindEventsTodo()
 }

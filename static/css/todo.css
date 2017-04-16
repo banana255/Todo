@@ -7,7 +7,7 @@ body {
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .cannot-select {
@@ -21,7 +21,7 @@ body {
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.9);
-    z-index: 100;
+    z-index: 10000;
     position: absolute;
     top: 0rem;
 }
@@ -42,7 +42,7 @@ body {
     border-radius: 8%;
 }
 
-.todo-login-form > *{
+.todo-login-form > * {
     width: 100%;
     line-height: 2rem;
     font-size: 1rem;
@@ -100,17 +100,26 @@ body {
     height: 4rem;
 }
 
+.home,
 .login-exit {
     display: inline-block;
-    float: right;
-    height: 2rem;
+    line-height: 2rem;
     width: 4rem;
     background: white;
     text-align: center;
     margin: 1rem;
     border-radius: 8%;
     box-sizing: border-box;
-    padding: 0.1rem;}
+    padding: 0.1rem;
+}
+
+.home {
+    float: left;
+}
+
+.login-exit {
+    float: right;
+}
 
 .login-exit:hover {
     background: #cacaca;
@@ -123,6 +132,7 @@ body {
 .login-exit-touches {
     background: black !important;
 }
+
 
 /* header end */
 

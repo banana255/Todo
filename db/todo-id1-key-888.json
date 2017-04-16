@@ -1,6 +1,12 @@
 [
     {
-<<<<<<< HEAD
+        "task": "dd",
+        "created_time": 1492090283,
+        "finish": false,
+        "project_id": 11,
+        "id": 17
+    },
+    {
         "task": "任务2",
         "created_time": 1491874825,
         "finish": false,
@@ -10,38 +16,6 @@
     {
         "task": "测试测试",
         "created_time": 1490538806,
-=======
-        "task": "你好4",
-        "created_time": 1490602409,
-        "finish": true,
-        "project_id": 10,
-        "id": 17
-    },
-    {
-        "task": "测试3",
-        "created_time": 1490602404,
-        "finish": false,
-        "project_id": 10,
-        "id": 17
-    },
-    {
-        "task": "4",
-        "created_time": 1490601957,
-        "finish": true,
-        "project_id": 9,
-        "id": 17
-    },
-    {
-        "task": "3",
-        "created_time": 1490601954,
-        "finish": false,
-        "project_id": 9,
-        "id": 17
-    },
-    {
-        "task": "测试2",
-        "created_time": 1490601951,
->>>>>>> 37b752c1cd0576eca15ce33dbfb6d092a027412d
         "finish": false,
         "project_id": 9,
         "id": 17
