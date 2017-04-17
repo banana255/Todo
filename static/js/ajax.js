@@ -108,6 +108,7 @@ Todo.prototype.tAdd = function(form, callback) {
         callback: callback,
         data: JSON.stringify(form),
     }
+    console.log(request);
     this.ajax(request)
 }
 

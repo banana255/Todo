@@ -13,6 +13,8 @@
         <script src='js/todo.js'></script>
         <script src='js/main.js'></script>
         <link rel="stylesheet" href="/css/calendar.css">
+        <script src="lib/sweetalert/sweetalert.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/sweetalert/sweetalert.css">
         <script src='js/calendar.js'></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -54,6 +56,7 @@
                     <div class="project-item-container">
                         <div class="todo-add">
                             <input class='input-todo' placeholder="请输入新任务">
+                            <input type="date" class="remind-time">
                             <button class="button-add-todo">添加</button>
                         </div>
                         <div class="project-todos">

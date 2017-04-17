@@ -16,6 +16,7 @@ const ModelTodo = function(form) {
     this.created_time = form.created_time || Math.floor(new Date() / 1000)
     this.finish = form.finish || false
     this.project_id = Number(form.project_id) || null
+    this.remind_time = Number(form.remind_time) || null
 }
 
 const loadTodos = function(path) {
@@ -57,7 +58,8 @@ t.all = function(form) {
 t.new = function(form) {
     this.all(form)
     var m = new ModelTodo(form)
-    var last = this.data[this.data.length-1]
+    // var last = this.data[this.data.length-1]
+    var last = this.data[0]
     if (last == undefined) {
         m.id = 1
     } else {

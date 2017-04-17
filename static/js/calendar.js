@@ -13,6 +13,7 @@ var Calendar = (function() {
         isInited: false,
         headContent: null,
         callback:null,
+        projectList: null,
 
         /**
          * 添加日历头部
@@ -75,8 +76,8 @@ var Calendar = (function() {
                 colDay.className = 'day';
                 for(var j = 0; j < 7; j++) {
                     var day = this.doc.createElement('div');
-                    day.setAttribute('date', dates[i][j].getTime());
-
+                    day.setAttribute('date', Math.floor(dates[i][j].getTime()/1000));
+                    day.setAttribute('id', 't'+Math.floor(dates[i][j].getTime()/1000))
                     //不是本月份的天数 颜色为浅色
                     if((i<1 || i >= 4) && (dates[i][j].getMonth() !== month)) {
                         day.className = 'beside';
@@ -89,7 +90,9 @@ var Calendar = (function() {
                     else {
                         day.innerHTML = '<span>' + dates[i][j].getDate() + '</span>';
                     }
-                    day.classList.add('msg','msg1')
+                    day.classList.add('msg')
+                    day.dataset.msgNum = 0
+                    day.dataset.pId = ''
                     colDay.appendChild(day);
                 }
 
@@ -112,7 +115,16 @@ var Calendar = (function() {
 
                     //执行用户传入的函数
                     if(e.target.nodeName === 'SPAN' && that.callback instanceof Function) {
-                        that.callback(e.target.parentNode.getAttribute('date'));
+                        let pId = e.target.parentElement.dataset.pId.split('/')
+                        if (pId[0] == '') {
+                            pId = []
+                        }
+                        let r = {}
+                        for (var i = 0; i < pId.length; i++) {
+                            r[pId[i]] = ''
+                        }
+                        // console.log(r);
+                        that.callback(e.target.parentNode.getAttribute('date'), Object.keys(r))
                         e.target.className = 'daySelected';
                     }
                 }
@@ -185,6 +197,7 @@ var Calendar = (function() {
 
 
                 that.render();
+                that.renderMsg(that.projectList)
                 return false;
 
             },false);
@@ -203,6 +216,7 @@ var Calendar = (function() {
                     that.date = new Date(year, month + 1, 1);
                 }
                 that.render();
+                that.renderMsg(that.projectList)
             }, false);
 
         },
@@ -224,6 +238,52 @@ var Calendar = (function() {
                 this.headContent.innerHTML = (this.date.getMonth() + 1) + ' 月 '
                                                + this.date.getFullYear() + ' 年';
             }
+        },
+
+        addOneMsg: function(day) {
+            // console.log('addOneMsg', day);
+            let num = Number(day.dataset.msgNum)
+            let newI = num + 1
+            day.dataset.msgNum = newI
+            let newClass = newI < 17 ? 'msg'+ newI : 'msgn'
+            day.classList.remove('msg'+num)
+            day.classList.add(newClass)
+        },
+
+        renderMsg: function(Project) {
+            /**
+             * Project : [
+             *      {
+             *          id: 2,
+             *          todos: [
+             *              {
+             *                  id: 8,
+             *                  remind_time: 1492358400000,
+             *              }
+             *          ]
+             *      },
+             * ]
+             *
+             */
+            this.projectList = Project
+            for (let i = 0; i < Project.length; i++) {
+                let p = Project[i]
+                let pId = p.id
+                for (let j = 0; j < p.todos.length; j++) {
+                    let t = p.todos[j]
+                    let tId = t.id
+                    let time = t.remind_time
+                    let sel = '#t' + time
+                    let d = e(sel)
+                    if (!d) {
+                        continue
+                    }
+                    //  console.log('i j', i, j);
+                    d.dataset.pId = d.dataset.pId == '' ? pId : (d.dataset.pId + '/' + pId)
+                    this.addOneMsg(d)
+                }
+            }
+
         },
 
         init: function(id, date, callback) {

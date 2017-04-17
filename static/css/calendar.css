@@ -42,7 +42,7 @@ body {
   cursor: pointer;
 }
 #calendar {
-  min-height: 100%;
+  min-height: calc(100% - 4rem - 3rem);
 }
 #calHead,
 .week {
@@ -153,6 +153,65 @@ body {
     background: #8cb581;
 }
 
+.msg5::after {
+    content: '5';
+    background: #8cb581;
+}
+
+.msg6::after {
+    content: '6';
+    background: #8cb581;
+}
+
+.msg7::after {
+    content: '7';
+    background: #8cb581;
+}
+
+.msg8::after {
+    content: '8';
+    background: #8cb581;
+}
+
+.msg9::after {
+    content: '9';
+    background: #8cb581;
+}
+
+.msg10::after {
+    content: '10';
+    background: #8cb581;
+}
+
+.msg11::after {
+    content: '11';
+    background: #8cb581;
+}
+
+.msg12::after {
+    content: '12';
+    background: #8cb581;
+}
+
+.msg13::after {
+    content: '13';
+    background: #8cb581;
+}
+
+.msg14::after {
+    content: '14';
+    background: #8cb581;
+}
+
+.msg15::after {
+    content: '15';
+    background: #8cb581;
+}
+
+.msg16::after {
+    content: '16';
+    background: #8cb581;
+}
 .msgn::after {
     content: 'n';
     background: #8cb581;

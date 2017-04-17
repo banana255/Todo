@@ -9,15 +9,15 @@ const templateTodos = function(items) {
 
 const templateTodo = function(item) {
     var i = item.finish ? 'done' : ''
-    var time = timeFormat(item.created_time)
+    var time = timeFormat(item.remind_time).split(' ')[0]
     var t = `
-        <div class='todo-cell ${i}' data-id=${item.id}>
+        <div class='todo-cell ${i}' data-id=${item.id} data-remind-time=${item.remind_time}>
             <span class='todo-content'>
                 <span class='todo-task' contenteditable='false'>${item.task}</span>
                 <span class='task-time'>${time}</span>
             </span>
             <span class="todo-cell-button-group">
-                <button class='todo-done'>完成</button>
+                <button class='todo-done hide'>完成</button>
                 <button class='todo-delete'>删除</button>
                 <button class='todo-edit'>更新</button>
             </span>
@@ -45,7 +45,7 @@ const templateProject = function(p) {
         containHeight = ''
     }
     let t = `
-    <div class="project-item" data-id=${p.id}>
+    <div class="project-item" id="p${p.id}" data-id=${p.id}>
         <div class="project-header">
             <span class="project-name">${p.name}</span>
             <span class="proj-button-group">
@@ -58,6 +58,7 @@ const templateProject = function(p) {
         <div class="project-item-container ${open.hh}" style='height: ${containHeight}rem'>
             <div class="todo-add">
                 <input class='input-todo' placeholder="请输入新任务">
+                <input type="date" class="remind-time">
                 <button class="button-add-todo">添加</button>
             </div>
             <div class="project-todos">
@@ -169,7 +170,14 @@ const bindTodoAddButton = function() {
             let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
             // console.log('pItem', pItem);
             let todoInput = pDiv.querySelector('.input-todo')
+            let timeInputValue = pDiv.querySelector('.remind-time').value || null
             let task = todoInput.value
+            let remindTime
+            if (timeInputValue) {
+                remindTime = Math.floor(new Date(timeInputValue.split('-').join('/')).getTime() / 1000)
+            } else {
+                remindTime = null
+            }
             if (task.length == 0) {
                 return
             }
@@ -177,7 +185,9 @@ const bindTodoAddButton = function() {
             let item = {
                 'task': task,
                 'project_id': pId,
+                'remind_time': remindTime,
             }
+            console.log(item);
             // log('todo-add', item, pItem)
             addbutton.setAttribute('disabled', '')
             // console.log(pItem, 'id', pId, 'pDiv', pDiv);
@@ -392,16 +402,69 @@ const bindShowMore = function() {
     })
 }
 
+const toggleHome = function() {
+    /* 清除 单个日期的 proj 样式 S */
+    e('.project-form').classList.remove('hide')
+    es('.project-item').forEach(function(item){
+        item.classList.remove('hide')
+    })
+    es('.todo-add').forEach(function(item){
+        item.classList.remove('hide')
+    })
+    es('.strong').forEach(function(item){
+        item.classList.remove('strong')
+    })
+    es('.small').forEach(function(item){
+        item.classList.remove('small')
+    })
+    es('.todo-cell-button-group').forEach(function(item){
+        item.classList.remove('hide')
+    })
+    /* 清除 单个日期的 proj 样式 E */
+
+    e('.project-main').classList.toggle('hide')
+    e('#calendar').classList.toggle('hide')
+    e('.login-exit').classList.toggle('hide')
+    if (!e('.project-main').classList.contains('hide')) {
+        e('.home').innerHTML = '返回'
+    } else {
+        e('.home').innerHTML = '我的'
+    }
+}
+
 const bindShowHome = function() {
     e('.home').addEventListener('click', function(event){
         console.log('click home');
-        e('.project-main').classList.toggle('hide')
-        e('#calendar').classList.toggle('hide')
-        e('.login-exit').classList.toggle('hide')
-        if (!e('.project-main').classList.contains('hide')) {
-            this.innerHTML = '返回'
+        toggleHome()
+    })
+}
+
+const showProject = function(pIds, date) {
+    /**
+     *  根据 pIds 展示相应的 project
+\     */
+    // console.log('showProject');
+    if (pIds.length == 0) {
+        swal("该日无提醒事项", "", "success")
+        return
+    }
+    toggleHome()
+    e('.project-form').classList.add('hide')
+    es('.todo-add').forEach(function(item){
+        item.classList.add('hide')
+    })
+    es('.project-item').forEach(function(item){
+        if (pIds.indexOf(item.dataset.id) == -1) {
+            item.classList.add('hide')
+        }
+    })
+    es('.todo-cell').forEach(function(item){
+        item.querySelector('.todo-cell-button-group').classList.add('hide')
+        if (item.dataset.remindTime == String(date)) {
+            console.log('todo-cell', item);
+            item.classList.add('strong')
         } else {
-            this.innerHTML = '我的'
+            item.classList.add('small')
         }
     })
 }
@@ -416,14 +479,14 @@ const initBrower = function() {
             insertProject(p)
             // insertTodo(item)
         }
+        Calendar.renderMsg(todo.projectList)
     })
 
-    var callback = function(date) {
-        //doSomething
-        console.log('date', date);
-    }
     // 渲染日历
-    Calendar.init('calendar', new Date(), callback);
+    Calendar.init('calendar', new Date(), function(date, pIds){
+        console.log('date', date, pIds);
+        showProject(pIds, date)
+    });
 }
 
 const bindEventsTodo = function() {

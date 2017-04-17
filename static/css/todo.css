@@ -212,6 +212,14 @@ body {
     height: 0 !important;
 }
 
+.todo-add > .input-todo {
+    width: 10rem;
+}
+
+.todo-add > .remind-time {
+    width: 8rem;
+}
+
 .project-todos {
 
 }
@@ -223,6 +231,10 @@ body {
 
 .todo-cell + .todo-cell {
     border-top: 1px lightgray solid;
+}
+
+.todo-cell-button-group {
+    float: right;
 }
 
 /* 完成 todo */
@@ -242,4 +254,19 @@ body {
 .todo-add {
     text-align: center;
     line-height: 2rem;
+}
+
+.strong {
+    font-weight: 900;
+    color: black;
+}
+
+.small {
+    font-size: small;
+    color: #6b6b6b;
+}
+
+.strong  .task-time,
+.small  .task-time {
+    float: right;
 }
