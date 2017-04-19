@@ -266,6 +266,9 @@ var Calendar = (function() {
              *
              */
             this.projectList = Project
+            es('.msg').forEach(function(item){
+                item.dataset.msgNum = 0
+            })
             for (let i = 0; i < Project.length; i++) {
                 let p = Project[i]
                 let pId = p.id

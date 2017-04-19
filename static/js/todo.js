@@ -127,6 +127,10 @@ const insertProject = function(p) {
     let projectContainer = e('#id-project-container')
     let t = templateProject(p)
     projectContainer.insertAdjacentHTML('afterbegin', t)
+    // 给 input timedate-local 初始化时间
+    // es('.remind-time').forEach(function(item){
+    //     item.valueAsDate = new Date()
+    // })
 }
 
 const updateProj = function(target) {
@@ -407,6 +411,7 @@ const toggleHome = function() {
     e('.project-form').classList.remove('hide')
     es('.project-item').forEach(function(item){
         item.classList.remove('hide')
+        item.querySelector('.proj-button-group').classList.remove('hide')
     })
     es('.todo-add').forEach(function(item){
         item.classList.remove('hide')
@@ -429,6 +434,7 @@ const toggleHome = function() {
         e('.home').innerHTML = '返回'
     } else {
         e('.home').innerHTML = '我的'
+        Calendar.renderMsg(todo.projectList)
     }
 }
 
@@ -442,7 +448,7 @@ const bindShowHome = function() {
 const showProject = function(pIds, date) {
     /**
      *  根据 pIds 展示相应的 project
-\     */
+    */
     // console.log('showProject');
     if (pIds.length == 0) {
         swal("该日无提醒事项", "", "success")
@@ -457,14 +463,38 @@ const showProject = function(pIds, date) {
         if (pIds.indexOf(item.dataset.id) == -1) {
             item.classList.add('hide')
         }
+        item.querySelector('.proj-button-group').classList.add('hide')
     })
     es('.todo-cell').forEach(function(item){
         item.querySelector('.todo-cell-button-group').classList.add('hide')
         if (item.dataset.remindTime == String(date)) {
-            console.log('todo-cell', item);
+            // console.log('todo-cell', item);
             item.classList.add('strong')
         } else {
             item.classList.add('small')
+        }
+    })
+}
+
+const showTodoItem = function(id, projectList) {
+    let p = projectList
+    for (var i = 0; i < p.length; i++) {
+        let r = objectByKeyFromArray({id: id}, p[i].todos)
+        if (r) {
+            console.log('showTodoItem', r);
+            return r
+        }
+    }
+}
+
+const bindTodoItem = function() {
+    e('#id-project-container').addEventListener('click',function(event){
+        let t = event.target
+        if (t.classList.contains('todo-cell')) {
+            console.log('click item');
+            let tId = t.dataset.id
+            console.log(tId);
+            showTodoItem(tId, window.todo.projectList)
         }
     })
 }
@@ -503,6 +533,8 @@ const bindEventsTodo = function() {
 
     bindShowMore()
     bindShowHome()
+
+    bindTodoItem()
 }
 
 const __mainTodo = function() {

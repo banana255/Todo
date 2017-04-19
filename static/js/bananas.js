@@ -83,7 +83,7 @@ const ajax = function(request) {
 
 // 通过 某一 Obj.key=xx 从 Array 中找出 符合条件的条件的 Object 并返回
 const objectByKeyFromArray = function(keyWord, array) {
-    // { id: 2}
+    // keyworrd: { id: 2}
     // log('objectByKeyFromArray', keyWord, array)
     let key = Object.keys(keyWord)[0]
     for (var i = 0; i < array.length; i++) {

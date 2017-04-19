@@ -266,7 +266,11 @@ body {
     color: #6b6b6b;
 }
 
-.strong  .task-time,
-.small  .task-time {
+.strong .task-time,
+.small .task-time {
     float: right;
+}
+
+.todo-content {
+    pointer-events: none;
 }
