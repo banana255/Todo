@@ -9,7 +9,6 @@ var fs = require('fs')
     .update(form)
 */
 
-
 const ModelProject = function(form) {
     this.name = form.name || ''
     this.created_time = form.created_time || Math.floor(new Date() / 1000)

@@ -538,7 +538,7 @@ const bindEventsTodo = function() {
 }
 
 const __mainTodo = function() {
-    // 所有关于时间的均以 时间戳 存储(单位 ms)
+    // 所有关于时间的均以 时间戳 存储(单位 s)
     initBrower()
     bindEventsTodo()
 }
