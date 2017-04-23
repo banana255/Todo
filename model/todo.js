@@ -1,6 +1,6 @@
-var login = require('./login')
+const login = require('./login')
 
-var fs = require('fs')
+const fs = require('fs')
 
 /*
     .all()
@@ -10,6 +10,7 @@ var fs = require('fs')
 */
 
 // var todoFilePath = './db/todo.json'
+const Path = './db/todo.json'
 
 const ModelTodo = function(form) {
     this.task = form.task || ''
@@ -41,16 +42,17 @@ const loadPathFromLogin = function(form) {
 
 var t = {
     // loadTodos 只执行一次
-    // data: loadTodos()
+    data: loadTodos(Path)
 }
 
 t.all = function(form) {
-    this.path = loadPathFromLogin(form)
+    // this.path = loadPathFromLogin(form)
     // console.log('todo path', this.path);
-    if (this.path == undefined) {
-        return
-    }
-    this.data = loadTodos(this.path)
+    // if (this.path == undefined) {
+    //     return
+    // }
+    // this.data = loadTodos(this.path)
+    // this.data = loadTodos(Path)
     var todos = this.data
     return todos
 }
@@ -73,7 +75,7 @@ t.new = function(form) {
 
 t.save = function() {
     var s = JSON.stringify(this.data, '', 4)
-    fs.writeFile(this.path, s, (err) => {
+    fs.writeFile(Path, s, (err) => {
         err ? console.log(err) : console.log('todo 保存成功');
     })
 }

@@ -1,6 +1,6 @@
-var login = require('./login')
+const login = require('./login')
 
-var fs = require('fs')
+const fs = require('fs')
 
 /*
     .all()
@@ -8,6 +8,8 @@ var fs = require('fs')
     .dele(form)
     .update(form)
 */
+
+const Path = "db/project.json"
 
 const ModelProject = function(form) {
     this.name = form.name || ''
@@ -25,13 +27,25 @@ const loadFiles = function(path) {
     return data
 }
 
-const loadPathFromLogin = function(form) {
+// const loadPathFromLogin = function(form) {
+//     /*
+//         验证 用户， 若该用户 存在 则返回 该用户的 project path
+//     */
+//     var u = login.findByKey(form)
+//     if (u) {
+//         return u.projectPath
+//     } else {
+//         console.log('find project: ERR 未找的该用户');
+//     }
+// }
+
+const loadIdFromLogin = function(form) {
     /*
-        验证 用户， 若该用户 存在 则返回 该用户的 project path
+        验证 用户， 若该用户 存在 则返回 该用户的 userId
     */
     var u = login.findByKey(form)
     if (u) {
-        return u.projectPath
+        return u.id
     } else {
         console.log('find project: ERR 未找的该用户');
     }
@@ -64,16 +78,30 @@ const deleteTodoByProId = function(project_id, key) {
     todo.deleTodoByProId(form)
 }
 
-var p = {
-    // data:
+const loadProjectByUserId = function(userId, projects) {
+    let p = []
+    for (var i = 0; i < projects.length; i++) {
+        let ids = projects[i]['user_id']
+        if(ids.includes(Number(userId)) || ids.includes(String(userId))) {
+            p.push(projects[i])
+        }
+    }
+    return p
+}
+
+const p = {
+    data: loadFiles(Path)
 }
 
 p.all = function(form) {
-    this.path = loadPathFromLogin(form)
-    this.data = loadFiles(this.path)
-    var projects = JSON.parse(JSON.stringify(this.data))
+    // this.path = loadPathFromLogin(form)
+    // this.data = loadFiles(Path)
+    this.userId = loadIdFromLogin(form)
+    let allProjects = JSON.parse(JSON.stringify(this.data))
+    let projects = loadProjectByUserId(this.userId, allProjects)
 
-    for (var i = 0; i < projects.length; i++) {
+    // 给 project 加上 todos
+    for (let i = 0; i < projects.length; i++) {
         let p = projects[i]
         p.todos = loadTodoByProId(p.id, form.key)
     }
@@ -83,6 +111,18 @@ p.all = function(form) {
 p.new = function(form) {
     this.all(form)
     var m = new ModelProject(form)
+
+    // 把 form 中的 users 转换成 userIds
+    let ids = []
+    for (var i = 0; i < form.users.length; i++) {
+        let user = loadIdFromLogin(form.users[i])
+        if(user) {
+            ids.push(user.id)
+        }
+    }
+    m['user_id'] = ids
+
+    // 生成 id
     var last = this.data[this.data.length-1]
     if (last == undefined) {
         m.id = 1
@@ -97,7 +137,7 @@ p.new = function(form) {
 
 p.save = function() {
     var s = JSON.stringify(this.data, '', 4)
-    fs.writeFile(this.path, s, (err) => {
+    fs.writeFile(Path, s, (err) => {
         err ? console.log(err) : console.log('project 保存成功');
     })
 }

@@ -55,7 +55,7 @@ var update = {
 }
 
 var routes = [
-    all,
+    // all,
     add,
     dele,
     update,

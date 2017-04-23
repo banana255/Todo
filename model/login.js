@@ -34,22 +34,22 @@ u.new = function(form) {
 
     // 用 fs new 一个新的 db
     // fs open 的路径相对于 Todo
-    m.todoPath = 'db/todo-id' + m.id + '-key-' + m.key + '.json'
-    m.projectPath = 'db/project-id' + m.id + '-key-' + m.key + '.json'
+    // m.todoPath = 'db/todo-id' + m.id + '-key-' + m.key + '.json'
+    // m.projectPath = 'db/project-id' + m.id + '-key-' + m.key + '.json'
 
     // 新建 todoPath & projectPath 2 个文件
-    fs.open(m.todoPath, "w", 0644, function(err,fd){
-        if(err) {
-            throw err
-        }
-        fs.closeSync(fd);
-    })
-    fs.open(m.projectPath, "w", 0644, function(err,fd){
-        if(err) {
-            throw err
-        }
-        fs.closeSync(fd);
-    })
+    // fs.open(m.todoPath, "w", 0644, function(err,fd){
+    //     if(err) {
+    //         throw err
+    //     }
+    //     fs.closeSync(fd);
+    // })
+    // fs.open(m.projectPath, "w", 0644, function(err,fd){
+    //     if(err) {
+    //         throw err
+    //     }
+    //     fs.closeSync(fd);
+    // })
 
     this.data.push(m)
     this.save()
@@ -64,10 +64,10 @@ u.save = function() {
     })
 }
 
-u.indexOfTodos = function(id) {
+u.indexOfKeys = function(id) {
     for (var i = 0; i < this.data.length; i++) {
         if(this.data[i].id == id) {
-            // console.log('indexOfTodos', i);
+            // console.log('indexOfKeys', i);
             return  i
         }
     }
@@ -80,7 +80,7 @@ u.dele = function(form) {
         console.log('delete id is no defined!');
         return false
     } else {
-        var index = this.indexOfTodos(form.id)
+        var index = this.indexOfKeys(form.id)
         if (index !== false) {
             var item = this.data[index]
             this.data.splice(index, 1)
@@ -95,7 +95,7 @@ u.update = function(form) {
         console.log('update id is no defined!');
         return false
     } else {
-        var index = this.indexOfTodos(form.id)
+        var index = this.indexOfKeys(form.id)
         if (index !== false) {
             this.data[index].task = form.task || this.data[index].task
             this.data[index].finish = (form.finish !== undefined) ? form.finish : this.data[index].finish
