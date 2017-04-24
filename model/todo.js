@@ -26,19 +26,19 @@ const loadTodos = function(path) {
     return todos
 }
 
-const loadPathFromLogin = function(form) {
-    /*
-        验证 用户， 若该用户 存在 则返回 该用户的 todo path
-    */
-    var u = login.findByKey(form)
-    // console.log('loadPathFromLogin', u);
-    if (u) {
-        // console.log('find user', u);
-        return u.todoPath
-    } else {
-        console.log('ERR 未找的该用户');
-    }
-}
+// const loadPathFromLogin = function(form) {
+//     /*
+//         验证 用户， 若该用户 存在 则返回 该用户的 todo path
+//     */
+//     var u = login.findByKey(form)
+//     // console.log('loadPathFromLogin', u);
+//     if (u) {
+//         // console.log('find user', u);
+//         return u.todoPath
+//     } else {
+//         console.log('ERR 未找的该用户');
+//     }
+// }
 
 var t = {
     // loadTodos 只执行一次
@@ -53,12 +53,28 @@ t.all = function(form) {
     // }
     // this.data = loadTodos(this.path)
     // this.data = loadTodos(Path)
-    var todos = this.data
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+
+    let todos = this.data
+
+    // 给 todo 添加相应的 comments
+    const comment = require('./comment')
+    for (var i = 0; i < todos.length; i++) {
+        let t = todos[i]
+        t.comments = comment.commentsByTodoId(t.id)
+    }
     return todos
 }
 
 t.new = function(form) {
-    this.all(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+    // this.all(form)
     var m = new ModelTodo(form)
     // var last = this.data[this.data.length-1]
     var last = this.data[0]
@@ -70,6 +86,7 @@ t.new = function(form) {
     // this.data.push(m)
     this.data.unshift(m)
     this.save()
+    m.comments = []
     return m
 }
 
@@ -93,7 +110,11 @@ t.indexOfTodos = function(id) {
 }
 
 t.dele = function(form) {
-    this.all(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+    // this.all(form)
     if (!form.id) {
         console.log('delete id is no defined in Todos!');
         return false
@@ -109,7 +130,11 @@ t.dele = function(form) {
 }
 
 t.update = function(form) {
-    this.all(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+    // this.all(form)
     if (!form.id) {
         console.log('update id is no defined in Todos!');
         return false
@@ -130,8 +155,7 @@ t.deleTodoByProId = function(form) {
            key: key,
            'project_id': project_id,
     */
-    this.all(form)
-
+    // this.all(form)
     for (let i = 0; i < this.data.length; i++) {
         let t = this.data[i]
         if (t.project_id == form.project_id) {
@@ -140,6 +164,19 @@ t.deleTodoByProId = function(form) {
         }
     }
     this.save()
+}
+
+t.todosByProId = function(project_id) {
+    let ts = []
+    for (let i = 0; i < this.data.length; i++) {
+        let t = this.data[i]
+        // console.log(project_id, t.project_id, i);
+        if(project_id == t.project_id) {
+            ts.push(t)
+        }
+    }
+    // console.log('todos', ts);
+    return ts
 }
 
 module.exports = t

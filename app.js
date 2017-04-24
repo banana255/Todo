@@ -26,7 +26,8 @@ const routeModules = [
     './route/index',
     './route/todo',
     './route/login',
-    './route/project'
+    './route/project',
+    './route/comment'
 ]
 
 for (let i = 0; i < routeModules.length; i++) {

@@ -153,6 +153,8 @@ Todo.prototype.tDele = function(form, callback) {
 
 Todo.prototype.pAdd = function(form, callback) {
     form.key = todo.key
+    // TODO: users
+    form.users = [form.key]
     var request = {
         method: 'POST',
         url: '/api/project/add',
@@ -202,6 +204,35 @@ Todo.prototype.pDele = function(form, callback) {
     this.ajax(request)
 }
 
+
+Todo.prototype.cAdd = function(form, callback) {
+    form.key = todo.key
+    var request = {
+        method: 'POST',
+        url: '/api/comment/add',
+        contentType: 'application/json',
+        callback: callback,
+        data: JSON.stringify(form),
+    }
+    this.ajax(request)
+}
+
+Todo.prototype.cAll = function(callback) {
+    var form = {
+        key: todo.key,
+    }
+    var request = {
+        method: 'POST',
+        url: '/api/comment/all',
+        callback:callback,
+        contentType: 'application/json',
+        data: JSON.stringify(form),
+    }
+    // log(request)
+    this.ajax(request)
+}
+
+
 Todo.prototype.login = function(form, callback) {
     /*form = {
         key: value
@@ -220,6 +251,7 @@ Todo.prototype.login = function(form, callback) {
     }
     this.ajax(request)
 }
+
 
 const c = function(response){
     console.log('response', response);

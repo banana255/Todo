@@ -71,7 +71,7 @@ u.indexOfKeys = function(id) {
             return  i
         }
     }
-    console.log('id is no found in Todos');
+    console.log('id is no found in userKey');
     return false
 }
 
@@ -110,12 +110,13 @@ u.findByKey = function(form) {
         // console.log(this.data[i].key , form.key)
         // console.log(typeof this.data[i].key , typeof form.key)
         // console.log('findByKey', form);
-        if(this.data[i].key === form.key) {
+        if(this.data[i].key == form.key) {
+            // console.log('find id in login', this.data[i]);
             return {
                 isKey: true,
                 id: this.data[i].id,
-                todoPath: this.data[i].todoPath,
-                projectPath: this.data[i].projectPath,
+                // todoPath: this.data[i].todoPath,
+                // projectPath: this.data[i].projectPath,
             }
         }
     }

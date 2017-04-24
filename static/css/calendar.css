@@ -1,115 +1,117 @@
-html,
-body {
-  font: 400 14px/1.5 Tahoma, Helvetica, arial, sans-serif;
-  height: 100%;
-  padding: 0;
-  margin: 0 auto;
+html, body {
+    font: 400 14px/1.5 Tahoma, Helvetica, arial, sans-serif;
+    height: 100%;
+    padding: 0;
+    margin: 0 auto;
 }
-#calendar,
-#calHead,
-#calDays,
-.week,
-#calDays .day {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
+
+#calendar, #calHead, #calDays, .week, #calDays .day {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 }
-#calendar,
-#calDays {
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+
+#calendar, #calDays {
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
-#prevMonth,
-#nextMonth,
-.week > div,
-#calDays .day > div {
-  -webkit-flex: 1;
-  -moz-box-flex: 1;
-  -webkit-box-flex: 1;
-  -ms-flex: 1 auto;
-  flex: 1 ;
-  text-align: center;
-  align-content: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  cursor: pointer;
+
+#prevMonth, #nextMonth, .week>div, #calDays .day>div {
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 auto;
+    flex: 1;
+    text-align: center;
+    align-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    cursor: pointer;
 }
+
 #calendar {
-  min-height: calc(100% - 4rem - 3rem);
+    min-height: calc(100% - 4rem - 3rem);
 }
-#calHead,
-.week {
-  -webkit-box-ordinal-group: 1;
-  -moz-box-ordinal-group: 1;
-  -webkit-order: 0;
-  -ms-flex-order: 0;
-  order: 0;
-  webkit-box-flex: 0;
-  -moz-box-flex: 0;
-  -webkit-flex: 0 1 auto;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
-  background-color: #2bb8aa;
-  font-size: 1.5em;
-  color: #fff;
-  padding-bottom: 10px;
-  padding-top: 10px;
+
+#calHead, .week {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    background-color: #2bb8aa;
+    font-size: 1.5em;
+    color: #fff;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
-#calHead > div {
-  -webkit-box-ordinal-group: 1;
-  -moz-box-ordinal-group: 1;
-  -webkit-order: 0;
-  -ms-flex-order: 0;
-  order: 0;
+
+#calHead>div {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
 }
-.week > div,
+
+.week>div, #calDays {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    height: auto;
+}
+
 #calDays {
-  padding-bottom: 10px;
-  padding-top: 10px;
-  height: auto;
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -webkit-flex: 2 1 auto;
+    -ms-flex: 2 1 auto;
+    flex: 2 1 auto;
 }
-#calDays {
-  -webkit-box-flex: 2;
-  -moz-box-flex: 2;
-  -webkit-flex: 2 1 auto;
-  -ms-flex: 2 1 auto;
-  flex: 2 1 auto;
-}
+
 #calDays .day {
-  flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1 auto;
-  align-items: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  align-content: stretch;
+    flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1 auto;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    align-content: stretch;
 }
+
 #calDays .day span {
-  width: 3em;
-  height: 3em;
-  text-align: center;
-  line-height: 3em;
-  display: inline-block;
+    width: 3em;
+    height: 3em;
+    text-align: center;
+    line-height: 3em;
+    display: inline-block;
 }
+
 .beside {
-  color: #d9d9d9;
+    color: #d9d9d9;
 }
+
 .daySelected {
-  background-color: #2bb8aa;
-  color: #fff;
-  border-radius: 50%;
+    /*background-color: #2bb8aa;
+    color: #fff;
+    border-radius: 50%;*/
 }
+
 .today {
-  background-color: #d9d9d9;
-  color: #2bb8aa;
-  border-radius: 50%;
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 50%;
 }
 
 .msg {
@@ -136,7 +138,6 @@ body {
     content: '2';
     background: #8cb581;
 }
-
 
 .msg3::after {
     content: '3';
@@ -212,6 +213,7 @@ body {
     content: '16';
     background: #8cb581;
 }
+
 .msgn::after {
     content: 'n';
     background: #8cb581;

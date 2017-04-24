@@ -139,7 +139,7 @@ const updateProj = function(target) {
     let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
     // 把元素在 todoList 中更新
     let item = {
-        task: target.innerText,
+        name: target.innerText,
         id: pId,
     }
     // log('item', item)

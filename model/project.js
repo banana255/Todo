@@ -43,31 +43,33 @@ const loadIdFromLogin = function(form) {
     /*
         验证 用户， 若该用户 存在 则返回 该用户的 userId
     */
+   // console.log('loadIdFromLogin', form);
     var u = login.findByKey(form)
     if (u) {
         return u.id
     } else {
-        console.log('find project: ERR 未找的该用户');
+        console.log('find project: ERR 未找的该用户', u);
+        return
     }
 }
 
-const loadTodoByProId = function(project_id, key) {
-    const todo = require('./todo')
-    var form = {
-        key: key,
-    }
-    var todos = todo.all(form)
-    var ts = []
-    for (var i = 0; i < todos.length; i++) {
-        var t = todos[i]
-        // console.log(project_id, t.project_id, i);
-        if(project_id == t.project_id) {
-            ts.push(t)
-        }
-    }
-    // console.log('todos', ts);
-    return ts
-}
+// const loadTodoByProId = function(project_id, key) {
+//     const todo = require('./todo')
+//     var form = {
+//         key: key,
+//     }
+//     var todos = todo.all(form)
+//     var ts = []
+//     for (var i = 0; i < todos.length; i++) {
+//         var t = todos[i]
+//         // console.log(project_id, t.project_id, i);
+//         if(project_id == t.project_id) {
+//             ts.push(t)
+//         }
+//     }
+//     // console.log('todos', ts);
+//     return ts
+// }
 
 const deleteTodoByProId = function(project_id, key) {
     const todo = require('./todo')
@@ -96,28 +98,42 @@ const p = {
 p.all = function(form) {
     // this.path = loadPathFromLogin(form)
     // this.data = loadFiles(Path)
-    this.userId = loadIdFromLogin(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+
+    let userId = loadIdFromLogin(form)
+    // 深拷贝
     let allProjects = JSON.parse(JSON.stringify(this.data))
-    let projects = loadProjectByUserId(this.userId, allProjects)
+    let projects = loadProjectByUserId(userId, allProjects)
 
     // 给 project 加上 todos
+    const todo = require('./todo')
     for (let i = 0; i < projects.length; i++) {
         let p = projects[i]
-        p.todos = loadTodoByProId(p.id, form.key)
+        // p.todos = loadTodoByProId(p.id, form.key)
+        p.todos = todo.todosByProId(p.id)
     }
+    // console.log('projects all', projects);
     return projects
 }
 
 p.new = function(form) {
-    this.all(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+
+    // this.all(form)
     var m = new ModelProject(form)
 
     // 把 form 中的 users 转换成 userIds
     let ids = []
     for (var i = 0; i < form.users.length; i++) {
-        let user = loadIdFromLogin(form.users[i])
-        if(user) {
-            ids.push(user.id)
+        let userId = loadIdFromLogin({key: form.users[i]})
+        if(userId) {
+            ids.push(userId)
         }
     }
     m['user_id'] = ids
@@ -129,9 +145,9 @@ p.new = function(form) {
     } else {
         m.id = last.id + 1
     }
-    m.todos = []
     this.data.push(m)
     this.save()
+    m.todos = []
     return m
 }
 
@@ -154,7 +170,12 @@ p.indexOfProjects = function(id) {
 }
 
 p.dele = function(form) {
-    this.all(form)
+    // this.all(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+
     if (!form.id) {
         console.log('delete id is no defined in Projects!');
         return false
@@ -171,13 +192,19 @@ p.dele = function(form) {
 }
 
 p.update = function(form) {
-    this.all(form)
+    // this.all(form)
+    if(!login.findByKey(form).isKey) {
+        console.log('用户口令错误')
+        return
+    }
+
     if (!form.id) {
         console.log('update id is no defined in Projects!');
         return false
     } else {
         var index = this.indexOfProjects(form.id)
         if (index !== false) {
+            console.log('project update', form);
             this.data[index].name = form.name || this.data[index].name
             if (form.isSort !== undefined) {
                 this.data[index].isSort = form.isSort
