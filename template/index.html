@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>TODO</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <!-- Latest compiled and minified CSS -->
+        <script src="lib/nunjucks.min.js"></script>
         <link rel="stylesheet" href="lib/bootstrap-3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/todo.css">
         <script src='js/bananas.js'></script>
@@ -26,7 +26,7 @@
                 FastClick.attach(document.body);
                 // do work
                 __main()
-                alertGua()
+                // alertGua()
             })
         </script>
     </head>
@@ -42,8 +42,9 @@
         <div class="project-main hide">
             <!-- project 输入框 -->
             <div class="project-form">
-                <input id='id-input-project' type="text"  placeholder="新建工程">
-                <button id='id-button-project-add'>添加</button>
+                <input class="hide" id='id-input-project' type="text"  placeholder="新建工程">
+                <!-- <button class="hide" id='id-button-project-add'>添加</button> -->
+                <button id="id-button-project-add" class="btn btn-default">添加新工程</button>
             </div>
             <!-- Project 列表 -->
             <div id="id-project-container">
@@ -109,37 +110,34 @@
             <input type="datetime-local" name="" value="">
         </div> -->
 
-        <div class="alert-gua">
+        <!-- <div class="alert-gua">
             <div class="alert-header">
-                <h3>工程详情</h3>
+                <button class="alert-back btn btn-default glyphicon glyphicon-remove"></button>
+                <span class="alert-title">任务详情</span>
             </div>
             <div class="alert-container">
                 <form class="">
                     <div class="">
-                        工程名:
-                        <span class="">毕业设计</span>
+                        任务名:
+                        <span class="altet-strong">开会</span>
                     </div>
                     <div class="">
-                        创建时间:
-                        <span class="">2017-4-17</span>
+                        提醒时间:
+                        <span class="altet-strong">2017-4-17 15:00</span>
                     </div>
-                    <div class="">
-                        队长:
-                        <span class="">888</span>
+                    <div class="alert-comment">
+                        评论:
+                        <div class="">
+                            <span class="">888:</span>
+                            <span>请大家准时开会</span>
+                        </div>
                     </div>
-                    <div class="">
-                        组员:
-                        <span class="">888 & 999</span>
-                    </div>
-                    <!-- <button class="btn btn-default"></button>
-                    <button class="btn btn-default"></button> -->
                 </form>
             </div>
             <div class="alert-footer">
-                <button class="btn btn-default">删除工程</button>
-                <button class="btn btn-default">修改工程名</button>
+                <button class="alert-button btn btn-default">添加评论</button>
             </div>
-        </div>
+        </div> -->
 
         <!--  footer -->
         <div class="footer-blank"></div>

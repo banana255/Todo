@@ -9,17 +9,24 @@
 
 .alert-header {
     text-align: center;
-    /*padding: 0.5rem 0;*/
+    padding: 0.5rem 0;
     position: relative;
     /*height: 2rem;*/
+    /*background: black;*/
+    /*color: white;*/
+}
+
+.alert-title {
+    font-size: 1.8rem;
 }
 
 .alert-back {
     position: absolute;
-    left: 0;
+    right: 0;
+    top: 0;
     display: inline-block;
-    margin-left: 0.5rem;
-    height: 100%;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .alert-container {
@@ -32,16 +39,29 @@
 }
 
 .alert-footer {
-    text-align: center;
-    font-size: 0;
-    margin-top: 1rem;
+    /*text-align: center;*/
+    /*font-size: 0;*/
+    /*margin-top: 1rem;*/
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
 }
 
-.alert-footer > button {
-    width: 30%;
-    margin: 0 10%;
+.alert-button {
+    /*width: 30%;*/
+    /*margin: 0 10%;*/
+    flex: 1;
 }
 
 .alert-input-short {
     width: 75%;
+}
+
+.altet-strong {
+    font-weight: 900;
+}
+
+.alert-comment {
+    text-align: left;
 }

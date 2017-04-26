@@ -17,9 +17,9 @@ const templateTodo = function(item) {
                 <span class='task-time'>${time}</span>
             </span>
             <span class="todo-cell-button-group">
-                <button class='todo-done hide'>完成</button>
-                <button class='todo-delete'>删除</button>
-                <button class='todo-edit'>更新</button>
+                <button class='todo-done btn btn-default'>完成</button>
+                <button class='todo-delete btn btn-default'>删除</button>
+                <button class='todo-edit btn btn-default'>更新</button>
             </span>
         </div>
     `
@@ -49,9 +49,9 @@ const templateProject = function(p) {
         <div class="project-header">
             <span class="project-name">${p.name}</span>
             <span class="proj-button-group">
-                <button class='proj-done'>完成</button>
-                <button class='proj-delete'>删除</button>
-                <button class='proj-edit'>编辑</button>
+                <button class='proj-done btn btn-default'>完成</button>
+                <button class='proj-delete btn btn-default'>删除</button>
+                <button class='proj-edit btn btn-default'>编辑</button>
             </span>
             <span class="cannot-select show-more ${open.sm}"> < </span>
         </div>
@@ -291,24 +291,25 @@ const bindProjBlur = function() {
 const bindProjAddButton = function() {
     e('#id-button-project-add').addEventListener('click', function(event){
         log('bindAddProjButton')
-        let t = event.target
-        let input = e('#id-input-project')
-        let v = input.value
-        if (v.length == 0) {
-            return
-        }
-        let item = {
-            name: v
-        }
-        input.setAttribute('disabled', '')
-        window.todo.pAdd(item, function(res){
-            let r = JSON.parse(res)
-            log('bindAddProjButton res', r)
-            window.todo.projectList.push(r)
-            input.removeAttribute('disabled')
-            todo.projectList.push(r)
-            insertProject(r)
-        })
+        // let t = event.target
+        // let input = e('#id-input-project')
+        // let v = input.value
+        // if (v.length == 0) {
+        //     return
+        // }
+        // let item = {
+        //     name: v
+        // }
+        // input.setAttribute('disabled', '')
+        // window.todo.pAdd(item, function(res){
+        //     let r = JSON.parse(res)
+        //     log('bindAddProjButton res', r)
+        //     window.todo.projectList.push(r)
+        //     input.removeAttribute('disabled')
+        //     todo.projectList.push(r)
+        //     insertProject(r)
+        // })
+        alertGua('newProject')
     })
 }
 
