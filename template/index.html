@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <title>TODO</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="lib/bootstrap-3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/todo.css">
         <script src='js/bananas.js'></script>
         <script src='lib/fastclick.js'></script>
@@ -11,10 +13,12 @@
         <script src='js/login.js'></script>
         <script src='js/header.js'></script>
         <script src='js/todo.js'></script>
+        <script src='js/alert.js'></script>
         <script src='js/main.js'></script>
         <link rel="stylesheet" href="/css/calendar.css">
         <script src="lib/sweetalert/sweetalert.min.js"></script>
         <link rel="stylesheet" type="text/css" href="lib/sweetalert/sweetalert.css">
+        <link rel="stylesheet" type="text/css" href="/css/alertgua.css">
         <script src='js/calendar.js'></script>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
@@ -22,6 +26,7 @@
                 FastClick.attach(document.body);
                 // do work
                 __main()
+                alertGua()
             })
         </script>
     </head>
@@ -103,6 +108,38 @@
             </div>
             <input type="datetime-local" name="" value="">
         </div> -->
+
+        <div class="alert-gua">
+            <div class="alert-header">
+                <h3>工程详情</h3>
+            </div>
+            <div class="alert-container">
+                <form class="">
+                    <div class="">
+                        工程名:
+                        <span class="">毕业设计</span>
+                    </div>
+                    <div class="">
+                        创建时间:
+                        <span class="">2017-4-17</span>
+                    </div>
+                    <div class="">
+                        队长:
+                        <span class="">888</span>
+                    </div>
+                    <div class="">
+                        组员:
+                        <span class="">888 & 999</span>
+                    </div>
+                    <!-- <button class="btn btn-default"></button>
+                    <button class="btn btn-default"></button> -->
+                </form>
+            </div>
+            <div class="alert-footer">
+                <button class="btn btn-default">删除工程</button>
+                <button class="btn btn-default">修改工程名</button>
+            </div>
+        </div>
 
         <!--  footer -->
         <div class="footer-blank"></div>

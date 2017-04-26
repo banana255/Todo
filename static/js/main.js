@@ -7,5 +7,4 @@ const __main = function() {
 
     // 头部逻辑放置处
     __mainHeader()
-
 }
