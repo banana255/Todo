@@ -115,11 +115,13 @@ u.findByKey = function(form) {
             return {
                 isKey: true,
                 id: this.data[i].id,
+                key: this.data[i].key
                 // todoPath: this.data[i].todoPath,
                 // projectPath: this.data[i].projectPath,
             }
         }
     }
+    console.log('未在 userKey.json 中找到该用户');
     return
 }
 

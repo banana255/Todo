@@ -19,6 +19,7 @@ const ModelProject = function(form) {
     this.status = form.status || 0
     // true 为收起， false 为张开
     this.isSort = form.isSort || false
+    this.captain = form.captain || form.key
 }
 
 const loadFiles = function(path) {
@@ -39,16 +40,16 @@ const loadFiles = function(path) {
 //     }
 // }
 
-const loadIdFromLogin = function(form) {
+const loadUserFromLogin = function(form) {
     /*
         验证 用户， 若该用户 存在 则返回 该用户的 userId
     */
-   // console.log('loadIdFromLogin', form);
+   // console.log('loadUserFromLogin', form);
     var u = login.findByKey(form)
     if (u) {
-        return u.id
+        return u
     } else {
-        console.log('find project: ERR 未找的该用户', u);
+        console.log('find project: ERR 未找的该用户', form.key);
         return
     }
 }
@@ -103,7 +104,11 @@ p.all = function(form) {
         return
     }
 
-    let userId = loadIdFromLogin(form)
+    let user = loadUserFromLogin(form)
+    if (!user) {
+        return
+    }
+    let userId = user.id
     // 深拷贝
     let allProjects = JSON.parse(JSON.stringify(this.data))
     let projects = loadProjectByUserId(userId, allProjects)
@@ -130,13 +135,16 @@ p.new = function(form) {
 
     // 把 form 中的 users 转换成 userIds
     let ids = []
+    let users = []
     for (var i = 0; i < form.users.length; i++) {
-        let userId = loadIdFromLogin({key: form.users[i]})
-        if(userId) {
-            ids.push(userId)
+        let user = loadUserFromLogin({key: form.users[i]})
+        if(user) {
+            ids.push(user.id)
+            users.push(user.key)
         }
     }
     m['user_id'] = ids
+    m.users = users
 
     // 生成 id
     var last = this.data[this.data.length-1]
@@ -147,8 +155,9 @@ p.new = function(form) {
     }
     this.data.push(m)
     this.save()
-    m.todos = []
-    return m
+    let r = JSON.parse(JSON.stringify(m))
+    r.todos = []
+    return r
 }
 
 p.save = function() {
@@ -212,6 +221,23 @@ p.update = function(form) {
             // this.data[index].isSort = form.isSort || this.data[index].isSort
             if (form.status !== undefined) {
                 this.data[index].status = form.status
+            }
+            if (form.captain !== undefined) {
+                this.data[index].captain = form.captain
+            }
+            if (form.users !== undefined) {
+                // TODO: 等待测试
+                let ids = []
+                let users = []
+                for (var i = 0; i < form.users.length; i++) {
+                    let user = loadUserFromLogin({key: form.users[i]})
+                    if(user) {
+                        ids.push(user.id)
+                        users.push(user.key)
+                    },
+                    this.data[i].user_id = ids
+                    this.data[i].users users
+                }
             }
             // this.data[index].status = form.status || this.data[index].status
             // console.log('pUpdate', this.data[index]);

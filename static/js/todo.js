@@ -48,11 +48,11 @@ const templateProject = function(p) {
     <div class="project-item" id="p${p.id}" data-id=${p.id}>
         <div class="project-header">
             <span class="project-name">${p.name}</span>
-            <span class="proj-button-group">
-                <button class='proj-done btn btn-default'>完成</button>
+            <span class="proj-button-group hide">
+            <!--    <button class='proj-done btn btn-default'>完成</button>
                 <button class='proj-delete btn btn-default'>删除</button>
                 <button class='proj-edit btn btn-default'>编辑</button>
-            </span>
+            --></span>
             <span class="cannot-select show-more ${open.sm}"> < </span>
         </div>
         <div class="project-item-container ${open.hh}" style='height: ${containHeight}rem'>
@@ -116,7 +116,8 @@ const updateTodoHeight = function(tsDiv, pItem) {
 
 const getDataFromProjHead = function(target) {
     let d = {}
-    d.pDiv = target.parentElement.parentElement.parentElement
+    // d.pDiv = target.parentElement.parentElement.parentElement
+    d.pDiv = target.parentElement
     d.pId = Number(d.pDiv.dataset.id)
     d.pItem = objectByKeyFromArray({id: d.pId}, window.todo.projectList)
     return d
@@ -381,6 +382,16 @@ const bindProjDoneDeleteEdit = function() {
     })
 }
 
+const bindProjectOperate = function() {
+    e('body').addEventListener('click', function(event){
+        let t = event.target
+        if (t.classList.contains('project-header')) {
+            var d = getDataFromProjHead(t)
+            alertGua('projectContain', d)
+        }
+    })
+}
+
 // 是否收起 工程 夹
 const bindShowMore = function() {
     e('#id-project-container').addEventListener('click', function(event){
@@ -412,7 +423,7 @@ const toggleHome = function() {
     e('.project-form').classList.remove('hide')
     es('.project-item').forEach(function(item){
         item.classList.remove('hide')
-        item.querySelector('.proj-button-group').classList.remove('hide')
+        // item.querySelector('.proj-button-group').classList.remove('hide')
     })
     es('.todo-add').forEach(function(item){
         item.classList.remove('hide')
@@ -464,7 +475,7 @@ const showProject = function(pIds, date) {
         if (pIds.indexOf(item.dataset.id) == -1) {
             item.classList.add('hide')
         }
-        item.querySelector('.proj-button-group').classList.add('hide')
+        // item.querySelector('.proj-button-group').classList.add('hide')
     })
     es('.todo-cell').forEach(function(item){
         item.querySelector('.todo-cell-button-group').classList.add('hide')
@@ -525,12 +536,13 @@ const bindEventsTodo = function() {
     bindTodoAddButton()
     bindTodoDoneDeleteEdit()
     bindTodoUpdateKeyEnter()
-    bindTodoBlur()
+    bindProjectOperate()
+    // bindTodoBlur()
 
     bindProjAddButton()
-    bindProjDoneDeleteEdit()
-    bindProjUpdateKeyEnter()
-    bindProjBlur()
+    // bindProjDoneDeleteEdit()
+    // bindProjUpdateKeyEnter()
+    // bindProjBlur()
 
     bindShowMore()
     bindShowHome()

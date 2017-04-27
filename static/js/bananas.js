@@ -4,6 +4,8 @@ const log = function() {
 
 const e = (sel) => document.querySelector(sel)
 
+// e.prototype.on = document.querySelector.prototype.addEventListener
+
 const es = (sel) => document.querySelectorAll(sel)
 
 const inputRequired = function(input, button) {

@@ -153,8 +153,9 @@ Todo.prototype.tDele = function(form, callback) {
 
 Todo.prototype.pAdd = function(form, callback) {
     form.key = todo.key
-    // TODO: users
-    form.users = [form.key]
+    if (!form.users.includes(form.key)) {
+        form.users.push(form.key)
+    }
     var request = {
         method: 'POST',
         url: '/api/project/add',
