@@ -17,9 +17,12 @@ const templateTodo = function(item) {
                 <span class='task-time'>${time}</span>
             </span>
             <span class="todo-cell-button-group">
+                <!--
                 <button class='todo-done btn btn-default'>完成</button>
                 <button class='todo-delete btn btn-default'>删除</button>
                 <button class='todo-edit btn btn-default'>更新</button>
+                -->
+                <button class='todo-operate btn btn-default'><i class="glyphicon glyphicon-option-vertical"></i></button>
             </span>
         </div>
     `
@@ -49,17 +52,22 @@ const templateProject = function(p) {
         <div class="project-header">
             <span class="project-name">${p.name}</span>
             <span class="proj-button-group hide">
-            <!--    <button class='proj-done btn btn-default'>完成</button>
+                <!--
+                <button class='proj-done btn btn-default'>完成</button>
                 <button class='proj-delete btn btn-default'>删除</button>
                 <button class='proj-edit btn btn-default'>编辑</button>
-            --></span>
-            <span class="cannot-select show-more ${open.sm}"> < </span>
+                -->
+            </span>
+            <span class="cannot-select show-more ${open.sm}"><<</span>
         </div>
         <div class="project-item-container ${open.hh}" style='height: ${containHeight}rem'>
             <div class="todo-add">
+                <!--
                 <input class='input-todo' placeholder="请输入新任务">
                 <input type="date" class="remind-time">
                 <button class="button-add-todo">添加</button>
+                -->
+                <button class="button-add-todo btn btn-default" class="btn btn-default">添加新事项</button>
             </div>
             <div class="project-todos">
                 ${todos}
@@ -84,7 +92,7 @@ const getDataFromTodoCell = function(target) {
 }
 
 const insertTodo = function(item, tDiv) {
-    log('insertTodo', tDiv)
+    // log('insertTodo', tDiv)
     // 添加到 container 中
     var t = templateTodo(item)
     // 添加元素
@@ -168,44 +176,47 @@ const bindTodoAddButton = function() {
     e('.project-main').addEventListener('click', function(event){
         let t = event.target
         if (t.classList.contains('button-add-todo')) {
-            // 获得 input.value
-            let addbutton = t
-            let pDiv = t.parentElement.parentElement.parentElement
-            let pId = pDiv.dataset.id
-            let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
-            // console.log('pItem', pItem);
-            let todoInput = pDiv.querySelector('.input-todo')
-            let timeInputValue = pDiv.querySelector('.remind-time').value || null
-            let task = todoInput.value
-            let remindTime
-            if (timeInputValue) {
-                remindTime = Math.floor(new Date(timeInputValue.split('-').join('/')).getTime() / 1000)
-            } else {
-                remindTime = null
-            }
-            if (task.length == 0) {
-                return
-            }
-            // 生成 todo 对象
-            let item = {
-                'task': task,
-                'project_id': pId,
-                'remind_time': remindTime,
-            }
-            console.log(item);
-            // log('todo-add', item, pItem)
-            addbutton.setAttribute('disabled', '')
-            // console.log(pItem, 'id', pId, 'pDiv', pDiv);
-            window.todo.tAdd(item, function(res){
-                let r = JSON.parse(res)
-                // log('add todo', res)
-                pItem.todos.push(r)
-                todoInput.value = ''
-                addbutton.removeAttribute('disabled')
-                let tsDiv = pDiv.querySelector('.project-todos')
-                insertTodo(r, tsDiv)
-                updateTodoHeight(tsDiv, pItem)
-            })
+            let  h = t.closest('.project-item').querySelector('.project-header')
+            var d = getDataFromProjHead(h)
+            alertGua('newTodo', d)
+            // // 获得 input.value
+            // let addbutton = t
+            // let pDiv = t.parentElement.parentElement.parentElement
+            // let pId = pDiv.dataset.id
+            // let pItem = objectByKeyFromArray({id: pId}, window.todo.projectList)
+            // // console.log('pItem', pItem);
+            // let todoInput = pDiv.querySelector('.input-todo')
+            // let timeInputValue = pDiv.querySelector('.remind-time').value || null
+            // let task = todoInput.value
+            // let remindTime
+            // if (timeInputValue) {
+            //     remindTime = Math.floor(new Date(timeInputValue.split('-').join('/')).getTime() / 1000)
+            // } else {
+            //     remindTime = null
+            // }
+            // if (task.length == 0) {
+            //     return
+            // }
+            // // 生成 todo 对象
+            // let item = {
+            //     'task': task,
+            //     'project_id': pId,
+            //     'remind_time': remindTime,
+            // }
+            // console.log(item);
+            // // log('todo-add', item, pItem)
+            // addbutton.setAttribute('disabled', '')
+            // // console.log(pItem, 'id', pId, 'pDiv', pDiv);
+            // window.todo.tAdd(item, function(res){
+            //     let r = JSON.parse(res)
+            //     // log('add todo', res)
+            //     pItem.todos.push(r)
+            //     todoInput.value = ''
+            //     addbutton.removeAttribute('disabled')
+            //     let tsDiv = pDiv.querySelector('.project-todos')
+            //     insertTodo(r, tsDiv)
+            //     updateTodoHeight(tsDiv, pItem)
+            // })
         }
     })
 }
@@ -274,6 +285,18 @@ const bindTodoDoneDeleteEdit = function() {
             s.setAttribute('contenteditable', 'true')
             s.focus()
             // var selection = getSelection()
+        }
+    })
+}
+
+const bindTodoOperate = function() {
+    e('body').addEventListener('click', function(event){
+        let t = event.target
+        let b = t.closest('.todo-operate')
+        if (b) {
+            console.log('click todo-cell more');
+            let d = getDataFromTodoCell(b)
+            alertGua('todoContain', d)
         }
     })
 }
@@ -434,9 +457,9 @@ const toggleHome = function() {
     es('.small').forEach(function(item){
         item.classList.remove('small')
     })
-    es('.todo-cell-button-group').forEach(function(item){
-        item.classList.remove('hide')
-    })
+    // es('.todo-cell-button-group').forEach(function(item){
+    //     item.classList.remove('hide')
+    // })
     /* 清除 单个日期的 proj 样式 E */
 
     e('.project-main').classList.toggle('hide')
@@ -478,8 +501,9 @@ const showProject = function(pIds, date) {
         // item.querySelector('.proj-button-group').classList.add('hide')
     })
     es('.todo-cell').forEach(function(item){
-        item.querySelector('.todo-cell-button-group').classList.add('hide')
-        if (item.dataset.remindTime == String(date)) {
+        // item.querySelector('.todo-cell-button-group').classList.add('hide')
+        let time = item.dataset.remindTime
+        if (timeOfDay(time) == String(date)) {
             // console.log('todo-cell', item);
             item.classList.add('strong')
         } else {
@@ -534,12 +558,13 @@ const initBrower = function() {
 const bindEventsTodo = function() {
 
     bindTodoAddButton()
-    bindTodoDoneDeleteEdit()
-    bindTodoUpdateKeyEnter()
-    bindProjectOperate()
+    bindTodoOperate()
+    // bindTodoDoneDeleteEdit()
+    // bindTodoUpdateKeyEnter()
     // bindTodoBlur()
 
     bindProjAddButton()
+    bindProjectOperate()
     // bindProjDoneDeleteEdit()
     // bindProjUpdateKeyEnter()
     // bindProjBlur()
@@ -547,7 +572,7 @@ const bindEventsTodo = function() {
     bindShowMore()
     bindShowHome()
 
-    bindTodoItem()
+    // bindTodoItem()
 }
 
 const __mainTodo = function() {

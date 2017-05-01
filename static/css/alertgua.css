@@ -3,7 +3,7 @@
     width: 100vw;
     z-index: 10000;
     background: #ffeeee;
-    position: absolute;
+    position: fixed;
     top:0;
 }
 
@@ -45,6 +45,10 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+    display: flex;
+}
+
+.alert-button-group {
     display: flex;
 }
 

@@ -27,18 +27,10 @@ const routeModules = [
     './route/todo',
     './route/login',
     './route/project',
-    './route/comment'
+    // './route/comment'
 ]
 
 for (let i = 0; i < routeModules.length; i++) {
-    /*
-        routes = [
-            route1,
-            route2,
-            route3,
-            ...
-        ]
-    */
     let routes = require(routeModules[i])
     registerRoutes(app, routes)
 }
@@ -49,3 +41,5 @@ const server = app.listen(8082, function(){
 
     console.log('todo 开启, 访问地址为 http://%s:%s', host, port);
 })
+
+require('./model/comment').run(server)

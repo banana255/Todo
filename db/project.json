@@ -7,9 +7,14 @@
         "isSort": false,
         "id": 2,
         "user_id": [
-            1
+            1,
+            2
         ],
-        "captain": "888"
+        "captain": "888",
+        "users": [
+            "888",
+            "999"
+        ]
     },
     {
         "name": "工程1",
@@ -19,9 +24,14 @@
         "isSort": false,
         "id": 1,
         "user_id": [
+            1,
             2
         ],
-        "captain": "888"
+        "captain": "888",
+        "users": [
+            "888",
+            "999"
+        ]
     },
     {
         "name": "工程0",
@@ -66,10 +76,14 @@
         "status": 0,
         "isSort": false,
         "user_id": [
-            2,
-            1
+            1,
+            2
         ],
         "id": 11,
-        "captain": "9999"
+        "captain": "9999",
+        "users": [
+            "888",
+            "999"
+        ]
     }
 ]

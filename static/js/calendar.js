@@ -275,7 +275,7 @@ var Calendar = (function() {
                 for (let j = 0; j < p.todos.length; j++) {
                     let t = p.todos[j]
                     let tId = t.id
-                    let time = t.remind_time
+                    let time = timeOfDay(t.remind_time)
                     let sel = '#t' + time
                     let d = e(sel)
                     if (!d) {

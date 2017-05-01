@@ -73,6 +73,33 @@ c.indexOfComments = function(id) {
     return false
 }
 
+c.run = function(server) {
+    io = require('socket.io').listen(server);
+    let userList = []
+    io.on('connection', function(socket) {
+        //console.log(io.sockets)
+        console.log('新用户连接成功');
+        socket.emit('whoAreYou')
+        socket.on('name', function(name) {
+            console.log(name);
+            userList.push(name)
+            socket.name = name
+        })
+        socket.emit('loginMsg', '你登录了')
+        socket.on('message', function(msg) {
+            console.log(`收到了：${msg}`);
+            // io.sockets.emit('message', msg)
+            var user = socket.name
+            socket.broadcast.emit('chat', `${user}: ${msg}`)
+        })
+        socket.on('disconnect', () => {
+            console.log('有人离开了');
+            userList.splice(userList.indexOf(socket.name), 1);
+            socket.broadcast.emit('message', `${socket.name} 已经离开`)
+        })
+    })
+}
+
 // TODO:
 c.dele = function(form) {
     if(!login.findByKey(form).isKey) {

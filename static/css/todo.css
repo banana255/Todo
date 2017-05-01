@@ -10,6 +10,10 @@ body {
     display: none !important;
 }
 
+.center {
+    text-align: center;
+}
+
 .cannot-select {
     user-select: none;
     -webkit-user-select: none
@@ -265,11 +269,11 @@ body {
     font-size: small;
     color: #6b6b6b;
 }
-
+/*
 .strong .task-time,
 .small .task-time {
     float: right;
-}
+}*/
 
 .todo-content {
     pointer-events: none;

@@ -110,3 +110,15 @@ const zfill = function(string, length=2, key='0') {
     }
     return s
 }
+
+const timeOfDay = function(seconds) {
+    /**
+     * 给定时间戳
+     * 返回 时间戳 代表那天的 0:00 的时间戳
+     */
+    seconds = Number(seconds)
+    let hoursSeconds = 60 * 60
+    let day = Math.floor((seconds + 8 * hoursSeconds) / (24 * hoursSeconds))
+    let t = day * (24 * hoursSeconds) - (8 * hoursSeconds)
+    return t
+}

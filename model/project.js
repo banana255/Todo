@@ -229,15 +229,15 @@ p.update = function(form) {
                 // TODO: 等待测试
                 let ids = []
                 let users = []
-                for (var i = 0; i < form.users.length; i++) {
+                for (let i = 0; i < form.users.length; i++) {
                     let user = loadUserFromLogin({key: form.users[i]})
                     if(user) {
                         ids.push(user.id)
                         users.push(user.key)
-                    },
-                    this.data[i].user_id = ids
-                    this.data[i].users users
+                    }
                 }
+                this.data[index].user_id = ids
+                this.data[index].users = users
             }
             // this.data[index].status = form.status || this.data[index].status
             // console.log('pUpdate', this.data[index]);

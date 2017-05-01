@@ -1,3 +1,46 @@
+const commentSocket = function() {
+    var socket = io.connect()
+    socket.on('connect', function() {
+        console.log('连接成功');
+    })
+    socket.on('whoAreYou', () => {
+        var name = window.todo.key
+        socket.emit('name', name)
+    })
+    socket.on('loginMsg', function(msg) {
+        console.log('login message', msg);
+    })
+    socket.on('chat', function(msg) {
+        console.log('chat', msg);
+    })
+    let sendBtn = e('.alert-add-comment')
+    sendBtn.addEventListener('click', function() {
+        swal({
+            title: "添加评论!",
+            text: "请添加评论:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonText: "提交",
+            cancelButtonText: "取消",
+            animation: "slide-from-top",
+            inputPlaceholder: ""
+        },
+        function(inputValue) {
+            if (inputValue === false) return false;
+            if (inputValue === "") {
+                swal.showInputError("评论不能为空!");
+                return false
+            }
+            socket.emit('message', inputValue)
+            swal("提交成功!", "", "success");
+        });
+    })
+    e('.alert-cancel').addEventListener('click', function() {
+        socket.disconnect()
+    })
+}
+
 const alertGua = function(type, data) {
     /**
      * type: newProject  newTodo projectContain todoContain
@@ -33,12 +76,12 @@ const alertGua = function(type, data) {
         <div class="alert-container">
             <form class="">
                 <div class="">
-                    <input class='alert-input' placeholder="请输入任务名">
+                    <input class='alert-title-name alert-input' placeholder="请输入任务名">
                 </div>
                 <div class="">
                     <label class="alert-input">
                         提醒时间:
-                        <input class='alert-input-short' type="datetime-local">
+                        <input class='alert-remaind-time alert-input-short' type="datetime-local">
                     </label>
                 </div>
             </form>
@@ -76,7 +119,7 @@ const alertGua = function(type, data) {
                 </div>
             </form>
         </div>
-        <div class="alert-footer">
+        <div class="alert-footer alert-button-group">
             <button class="proj-delete alert-button btn btn-default">删除工程</button>
             <button class="proj-edit-name alert-button btn btn-default">修改工程名</button>
             <button class="proj-edit-captain alert-button btn btn-default">修改组长</button>
@@ -95,23 +138,34 @@ const alertGua = function(type, data) {
             <form class="">
                 <div class="">
                     任务名:
-                    <span class="altet-strong">开会</span>
+                    <span class="altet-strong">{{ task }}</span>
                 </div>
                 <div class="">
                     提醒时间:
-                    <span class="altet-strong">2017-4-17 15:00</span>
+                    <span class="altet-strong">{{ time }}</span>
                 </div>
+                <!-- TODO: 待完成
+                <div class='alert-button-group'>
+                    <button class="todo-delete alert-button btn btn-default">删除任务</button>
+                    <button class="todo-edit-name alert-button btn btn-default">修改任务名</button>
+                    <button class="todo-edit-time alert-button btn btn-default">修改提醒时间</button>
+                </div>
+                -->
                 <div class="alert-comment">
                     评论:
-                    <div class="">
-                        <span class="">888:</span>
-                        <span>请大家准时开会</span>
-                    </div>
+                    {% for item in comments %}
+                        <div class="">
+                            <span class="">{{ item.author }}:</span>
+                            <span>{{ item.content }}</span>
+                        </div>
+                    {% else %}
+                        <div class="center">暂无评论</div>
+                    {% endfor %}
                 </div>
             </form>
         </div>
         <div class="alert-footer">
-            <button class="alert-button btn btn-default">添加评论</button>
+            <button class="alert-add-comment alert-button btn btn-default">添加评论</button>
         </div>
     </div>
     `
@@ -142,10 +196,40 @@ const alertGua = function(type, data) {
             })
         })
     } else if (type == 'newTodo') {
+        console.log('data', data);
         e('body').insertAdjacentHTML('beforeend', newTodo)
+        e('.alert-commit').addEventListener('click', event => {
+            console.log('project 点击提交')
+            let name = e('.alert-title-name').value
+            let time = e('.alert-remaind-time').value
+            if (!name.length) {
+                swal("请输入任务名")
+                return
+            }
+            if (!time.length) {
+                swal("请输入提醒时间")
+                return
+            } else {
+                time = Math.floor(new Date(time).getTime() / 1000)
+            }
 
+            let item = {
+                task: name,
+                'remind_time': time,
+                'project_id': data.pId
+            }
+            window.todo.tAdd(item, function(res){
+                let r = JSON.parse(res)
+                // log('new Todo res', r)
+                data.pItem.todos.push(r)
+                let tsDiv = data.pDiv.querySelector('.project-todos')
+                insertTodo(r, tsDiv)
+                updateTodoHeight(tsDiv, data.pItem)
+                e('.alert-gua').remove()
+            })
+        })
     } else if (type == 'projectContain') {
-        console.log('pro header data', data);
+        console.log('pro  data', data);
         let item = data.pItem
         let time = {
             createdTime: new Date(item["created_time"]*1000).toLocaleString()
@@ -288,12 +372,17 @@ const alertGua = function(type, data) {
             });
         })
     } else if (type == 'todoContain') {
-        e('body').insertAdjacentHTML('beforeend', todoContain)
+        console.log('todo data', data);
+        let item = data.tItem
+        let time = {
+            time: new Date(item["remind_time"]*1000).toLocaleString()
+        }
+        let html = nunjucks.renderString(todoContain, Object.assign(item, time) )
+        e('body').insertAdjacentHTML('beforeend', html)
+        commentSocket()
     } else {
         return
     }
-
-
 
     e('.alert-cancel').addEventListener('click', event => {
         let t = event.target

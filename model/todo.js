@@ -53,12 +53,12 @@ t.all = function(form) {
     // }
     // this.data = loadTodos(this.path)
     // this.data = loadTodos(Path)
-    if(!login.findByKey(form).isKey) {
-        console.log('用户口令错误')
-        return
-    }
+    // if(!login.findByKey(form).isKey) {
+    //     console.log('用户口令错误')
+    //     return
+    // }
 
-    let todos = this.data
+    let todos = JSON.parse(JSON.stringify(this.data));
 
     // 给 todo 添加相应的 comments
     const comment = require('./comment')
@@ -168,14 +168,15 @@ t.deleTodoByProId = function(form) {
 
 t.todosByProId = function(project_id) {
     let ts = []
-    for (let i = 0; i < this.data.length; i++) {
-        let t = this.data[i]
+    let data = t.all()
+    for (let i = 0; i < data.length; i++) {
+        let t = data[i]
         // console.log(project_id, t.project_id, i);
         if(project_id == t.project_id) {
             ts.push(t)
         }
     }
-    // console.log('todos', ts);
+    // console.log('todosByProId', ts);
     return ts
 }
 
