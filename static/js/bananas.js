@@ -122,3 +122,7 @@ const timeOfDay = function(seconds) {
     let t = day * (24 * hoursSeconds) - (8 * hoursSeconds)
     return t
 }
+
+const appendHtml = function(sel, html, position="beforeend") {
+    e(sel).insertAdjacentHTML(position, html)
+}

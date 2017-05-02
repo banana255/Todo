@@ -76,6 +76,7 @@ c.indexOfComments = function(id) {
 c.run = function(server) {
     io = require('socket.io').listen(server);
     let userList = []
+    let that = this
     io.on('connection', function(socket) {
         //console.log(io.sockets)
         console.log('新用户连接成功');
@@ -84,13 +85,20 @@ c.run = function(server) {
             console.log(name);
             userList.push(name)
             socket.name = name
+            socket.emit('loginMsg', '你登录了')
+            socket.emit('whereAreYou')
         })
-        socket.emit('loginMsg', '你登录了')
+        socket.on('iAmAt', function(tId) {
+            // console.log('find by tId', tId);
+            let data = that.commentsByTodoId(tId)
+            socket.emit('commentsAll', data)
+        })
         socket.on('message', function(msg) {
-            console.log(`收到了：${msg}`);
-            // io.sockets.emit('message', msg)
+            console.log(`收到了：${msg.key}: ${msg.content}`);
             var user = socket.name
-            socket.broadcast.emit('chat', `${user}: ${msg}`)
+            let d = that.new(msg)
+            io.sockets.emit('chat', d)
+            socket.broadcast.emit('chat', d)
         })
         socket.on('disconnect', () => {
             console.log('有人离开了');

@@ -1,4 +1,4 @@
-const commentSocket = function() {
+const commentSocket = function(data) {
     var socket = io.connect()
     socket.on('connect', function() {
         console.log('连接成功');
@@ -10,8 +10,18 @@ const commentSocket = function() {
     socket.on('loginMsg', function(msg) {
         console.log('login message', msg);
     })
+    socket.on('whereAreYou', () => {
+        let todo_id = data.todoId
+        socket.emit('iAmAt', todo_id)
+    })
+    socket.on('commentsAll', (commentsAll) => {
+        console.log('commentsAll', commentsAll)
+        produceComments(commentsAll)
+    })
     socket.on('chat', function(msg) {
         console.log('chat', msg);
+        appendComment(msg)
+        // alert(msg)
     })
     let sendBtn = e('.alert-add-comment')
     sendBtn.addEventListener('click', function() {
@@ -23,8 +33,8 @@ const commentSocket = function() {
             closeOnConfirm: false,
             confirmButtonText: "提交",
             cancelButtonText: "取消",
-            animation: "slide-from-top",
-            inputPlaceholder: ""
+            // animation: "slide-from-top",
+            inputPlaceholder: "请在此输入"
         },
         function(inputValue) {
             if (inputValue === false) return false;
@@ -32,13 +42,49 @@ const commentSocket = function() {
                 swal.showInputError("评论不能为空!");
                 return false
             }
-            socket.emit('message', inputValue)
+            let item = {
+                content: inputValue,
+                'todo_id': data.todoId,
+                key: window.todo.key,
+            }
+            socket.emit('message', item)
             swal("提交成功!", "", "success");
         });
     })
     e('.alert-cancel').addEventListener('click', function() {
         socket.disconnect()
     })
+}
+
+const produceComments = function(comments) {
+    let key = window.todo.key
+    let temp = `
+    {% for item in comments %}
+        <div class="">
+            {%  if item.author == key  %}
+                <span class="">我:</span>
+            {% else %}
+                <span class="">{{ item.author }}:</span>
+            {% endif %}
+            <span>{{ item.content }}</span>
+        </div>
+    {% else %}
+        <div class="center">暂无评论</div>
+    {% endfor %}
+    `
+    let html =  nunjucks.renderString(temp, {comments: comments, key: key})
+    e('.comment-container').innerHTML = html
+}
+
+const appendComment = function(data) {
+    let key = window.todo.key
+    let html = `
+    <div class="">
+        <span class="">${ data.author == key ? '我' : data.author}:</span>
+        <span>${ data.content }</span>
+    </div>
+    `
+    appendHtml('.comment-container', html, 'afterbegin')
 }
 
 const alertGua = function(type, data) {
@@ -153,14 +199,7 @@ const alertGua = function(type, data) {
                 -->
                 <div class="alert-comment">
                     评论:
-                    {% for item in comments %}
-                        <div class="">
-                            <span class="">{{ item.author }}:</span>
-                            <span>{{ item.content }}</span>
-                        </div>
-                    {% else %}
-                        <div class="center">暂无评论</div>
-                    {% endfor %}
+                    <div class="comment-container"></div>
                 </div>
             </form>
         </div>
@@ -379,7 +418,8 @@ const alertGua = function(type, data) {
         }
         let html = nunjucks.renderString(todoContain, Object.assign(item, time) )
         e('body').insertAdjacentHTML('beforeend', html)
-        commentSocket()
+        // produceComments(item.comments)
+        commentSocket(data)
     } else {
         return
     }
