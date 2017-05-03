@@ -91,6 +91,7 @@ const alertGua = function(type, data) {
     /**
      * type: newProject  newTodo projectContain todoContain
      */
+    e('body').classList.add('stop-scrolling')
     let newProject = `
     <div class="alert-gua">
         <div class="alert-header">
@@ -428,5 +429,6 @@ const alertGua = function(type, data) {
         let t = event.target
         // console.log('click alerst-cancel', t);
         e('.alert-gua').remove()
+        e('body').classList.remove('stop-scrolling')
     })
 }

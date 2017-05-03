@@ -69,3 +69,8 @@
 .alert-comment {
     text-align: left;
 }
+
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
