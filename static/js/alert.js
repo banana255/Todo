@@ -69,7 +69,7 @@ const produceComments = function(comments) {
             <span>{{ item.content }}</span>
         </div>
     {% else %}
-        <div class="center">暂无评论</div>
+        <div class="no-comment center">暂无评论</div>
     {% endfor %}
     `
     let html =  nunjucks.renderString(temp, {comments: comments, key: key})
@@ -84,6 +84,11 @@ const appendComment = function(data) {
         <span>${ data.content }</span>
     </div>
     `
+    let n = e('.no-comment')
+    if (n) {
+        console.log('remove no comment');
+        n.remove()
+    }
     appendHtml('.comment-container', html, 'afterbegin')
 }
 
@@ -250,6 +255,7 @@ const alertGua = function(type, data) {
                 swal("请输入提醒时间")
                 return
             } else {
+                time = time.split('T').join(' ')
                 time = Math.floor(new Date(time).getTime() / 1000)
             }
 

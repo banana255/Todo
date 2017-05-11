@@ -98,7 +98,7 @@ c.run = function(server) {
             var user = socket.name
             let d = that.new(msg)
             io.sockets.emit('chat', d)
-            socket.broadcast.emit('chat', d)
+            // socket.broadcast.emit('chat', d)
         })
         socket.on('disconnect', () => {
             console.log('有人离开了');
