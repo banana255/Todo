@@ -255,7 +255,9 @@ const alertGua = function(type, data) {
                 swal("请输入提醒时间")
                 return
             } else {
-                time = time.split('T').join(' ')
+                // alert(time)
+                time = time.split('T').join(' ').split('-').join('/').split('.')[0]
+                // alert(time)
                 time = Math.floor(new Date(time).getTime() / 1000)
             }
 
